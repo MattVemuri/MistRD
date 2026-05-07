@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Users</title>
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <button class="back-btn" onclick="history.back()">
+        Back
+    </button>
+
+    <h1>Users</h1>
+
+    <div class = "controls">
+        <input type = "text"
+        placeholder="Search users"
+        class = "search-box">
+        <select class="filter-dropdown">
+            <option value="all">ID</option>
+            <option value="all">A-Z</option>
+            <option value="all">Playtime</option>
+            <option value="all">Owned Games</option>
+        </select>
+    </div>
+
+    <div class="content-list">
+
+    <a class="item item-interact" href="./library.html">
+        <div class="item-header">
+            <span class = item-title>Matt</span>
+
+            <span class = item-id>1</span>
+        </div>
+        
+        <div class = "item-details">
+            <div class = "info-box">
+                <span class = label>Total Playtime</span>
+                <span class = label-content>88</span>
+            </div>
+            <div class = "info-box">
+                <span class = label>Owned Games</span>
+                <span class = label-content>2</span>
+            </div>
+        </div>
+    </a>
+
+    <a class="item item-interact" href="./library.html">
+        <div class="item-header">
+            <span class = item-title>Sophia</span>
+
+            <span class = item-id>2</span>
+        </div>
+        
+        <div class = "item-details">
+            <div class = "info-box">
+                <span class = label>Total Playtime</span>
+                <span class = label-content>111</span>
+            </div>
+            <div class = "info-box">
+                <span class = label>Owned Games</span>
+                <span class = label-content>3</span>
+            </div>
+        </div>
+    </a>
+
+    <a class="item item-interact" href="./library.html">
+        
+        <div class="item-header">
+            <span class = item-title>xXX_Gamer_XXx</span>
+            <span class = item-id>3</span>
+        </div>
+        
+        <div class = "item-details">
+            <div class = "info-box">
+                <span class = label>Total Playtime</span>
+                <span class = label-content>769</span>
+            </div>
+            <div class = "info-box">
+                <span class = label>Owned Games</span>
+                <span class = label-content>4</span>
+            </div>
+        </div>
+    </a>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
+
+<!-- username, id, owned games, totalPlaytime -->

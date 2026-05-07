@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Library</title>
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+    <button class="back-btn" onclick="history.back()">
+        Back
+    </button>
+
+    <h1>Matt</h1>
+
+    <div class = "controls">
+        <input type = "text"
+            placeholder="Search library"
+            class = "search-box"
+        >
+        <select class="filter-dropdown">
+            <option value="all">ID</option>
+            <option value="all">A-Z</option>
+            <option value="all">Playtime</option>
+            <option value="all">Completion</option>
+        </select>
+    </div>
+
+    <div class="content-list">
+
+        <div class="item">
+            
+            <div class="item-header">
+                <div class = item-title>Fortnite</div>
+
+                <div class = item-id>1</div>
+            </div>
+
+            <div class = "item-details">
+                <div class = "info-box">
+                    <span class = label>Playtime</span>
+                    <span class = label-content>300</span>
+                </div>                
+                <div class = "info-box">
+                    <span class = label>Completion</span>
+                    <span class = label-content>23%</span>
+                </div>                
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

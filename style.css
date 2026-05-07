@@ -1,0 +1,142 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #282828;
+    color: #ffffff;
+}
+
+.container {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+h1 {
+    /* text-align: center; */
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+}
+
+.big-title{
+    font-size: 5rem;
+    /* text-shadow: 0 0 5px white; */
+}
+
+.content-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.item {
+    text-decoration: none;
+    display: block;
+    color: inherit;
+    background: rgba(142, 142, 142, 0.5);
+    padding: 10px;
+    border-radius: 12px;
+    grid-template-columns: 80px 2fr 1fr 1fr;
+    height: 100%;
+    transition: .15s;
+}
+
+.content-block h2 {
+    margin-top: 0;
+}
+
+.content-block p {
+    line-height: 1.6;
+}
+
+.item-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+}
+
+.item-title{
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.item-id{
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 6px 12px;
+}
+
+.item-details{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+    gap:15px;
+}
+
+.info-box{
+    padding:12px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+}
+
+
+.label{
+    font-size: .8rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #d2d2d2;
+}
+
+.label-content{
+    /* text-transform: lowercase; */
+    font-size: 1.2rem;
+}
+
+.controls{
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 25px;
+
+}
+
+.search-box{
+    flex:1;
+    padding: 12px;
+    border:none;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.filter-dropdown{
+    padding: 12px;
+    border:none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.back-btn{
+    background-color: rgba(255,255,255,.08);
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    font-size:1rem;
+    transition: background 0.5s;
+}
+
+.back-btn:hover{
+    background-color:  rgba(255,255,255,.2);
+    box-shadow: inset 5px 5px 16px rgb(0,0,0,.5);
+}
+
+.item-interact:hover{
+    transform: translateY(-2px);
+    cursor: pointer;
+    /* box-shadow: 0px 10px 5px rgb(0, 0, 0,.2); */
+}
