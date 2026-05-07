@@ -26,29 +26,25 @@
             <option value="all">Published Games</option>
         </select>
     </div>
-
-    <div class = "userAdd"> 
-        <label>
-            Publishers:
-            <input type = "text" name = "publisher" required = "">
-        </label>
-        <label>
-            Webpage:
-            <input type = "text" name = "webpage" required = "">
-        </label>
-        <label>
-            Email:
-            <input type = "text" name = "email" required = "">
-        </label>
-
-        <div class = "controls">
-            <button>
-                Add User
-            </button>
+    
+    <div class="content-list">
+        
+    <div class= "form"> 
+        <div class="item-header">
+            <div class = item-title>Add Publisher</div>
         </div>
+        <form action = "./publishers.html"> 
+            <label>Publisher:</label><br>
+                <input type = "text" name = "publisher" class = "add-box"><br>
+            <label>Webpage:</label><br>
+                <input type = "text" name = "webpage" class = "add-box"><br>
+            <label>Email:</label><br>
+                <input type = "text" name = "genre" class = "add-box"><br>
+            <br>
+            <input type = "submit" value = "Submit" class="filter-dropdown">
+        </form>
     </div>
 
-    <div class="content-list">
 
       <a class="item item-interact" href="./singlePublisher.html">
         
