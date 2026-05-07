@@ -29,8 +29,31 @@
             <option value="all">Completion</option>
         </select>
     </div>
-
+    
     <div class="content-list">
+
+        <div class= "form"> 
+            <div class="item-header">
+                <div class = item-title>Add Game</div>
+            </div>
+            <form action = "./publishers.html"> 
+                <label>Game:</label><br>
+                    <select class="filter-dropdown" name = "Game">
+                        <option value="all">Counter-Strike 2</option>
+                        <option value="all">METAL GEAR SOLID Δ: SNAKE EATER</option>
+                        <option value="all">Half-Life 2</option>
+                        <option value="all">PRAGMATA</option>
+                        <option value="all">Hollow Knight: Silksong</option>
+                    </select><br>
+                <label>Playtime:</label><br>
+                    <input type = "number" name = "Playtime" class = "add-box" min="0"><br>
+                <label>Completion:</label><br>
+                    <input type = "number" name = "Completion" class = "add-box" min="0" max="100"><br>
+                <br>
+                <input type = "submit" value = "Submit" class="filter-dropdown">
+            </form>
+        </div>
+
 
         <div class="item">
             
