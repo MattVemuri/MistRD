@@ -29,6 +29,50 @@ h1 {
     gap: 20px;
 }
 
+/*Form Section*/
+.form {
+    text-decoration: none;
+    display: block;
+    color: inherit;
+    background: rgba(142, 142, 142, 0.5);
+    padding: 10px;
+    border-radius: 12px;
+    grid-template-columns: 80px 2fr 1fr 1fr;
+    height: 100%;
+    transition: .15s;
+}
+
+.add-box {
+    flex:1;
+    padding: 8px;
+    border:none;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+label {
+    color: #d2d2d2;
+    padding: 10px;
+    font-size: .8rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    gap: 20px;
+}
+
+.button {
+    padding: 12px;
+    border:none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.edit {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+/*Item Section*/
 .item {
     text-decoration: none;
     display: block;
@@ -39,6 +83,13 @@ h1 {
     grid-template-columns: 80px 2fr 1fr 1fr;
     height: 100%;
     transition: .15s;
+}
+
+.item-actions{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
 }
 
 .content-block h2 {

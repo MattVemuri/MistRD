@@ -5,6 +5,7 @@
   <title>Games</title>
 
   <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=delete,edit" />
 </head>
 <body>
 
@@ -32,16 +33,58 @@
             <option value="all">Estimated Playtime</option>
         </select>
     </div>
-
+    
     <div class="content-list">
+
+    <div class= "form"> 
+        <div class="item-header">
+            <div class = item-title>Add Game</div>
+        </div>
+        <form action = "./games.html"> 
+            <label>Game:</label><br>
+                <input type = "text" name = "publisher" class = "add-box"><br>
+            <label>Publisher:</label><br>
+                <input type = "text" name = "webpage" class = "add-box"><br>
+            <label>Genre:</label><br>
+                <select class="filter-dropdown">
+                    <option value="all">FPS</option>
+                    <option value="all">Stealth</option>
+                    <option value="all">Action-Advencture</option>
+                    <option value="all">Metroidvania</option>
+                    <option value="all">Rougelike</option>
+                    <option value="all">Simulation</option>
+                    <option value="all">Role-Playing</option>
+                </select><br>
+                <!--<input type = "text" name = "genre" class = "add-box">-->
+            <label>Developer:</label><br>
+                <input type = "text" name = "developer" class = "add-box"><br>
+            <label>Release Date:</label><br>
+                <input type = "date" name = "releasedate" class = "add-box"><br>
+            <label>Price:</label><br>
+                <input type = "number" name = "price" class = "add-box" step="0.01" min="0" placeholder="0.00"><br>
+            <label>Estimated Playtime:</label><br>
+                <input type = "number" name = "estimatedplaytime" class = "add-box" min="0"><br>
+            <br>
+            <input type = "submit" value = "Submit" class="button">
+        </form>
+    </div>
+
+    
 
     <div class="item">
 
         <div class="item-header">
             <div class="item-title">Counter-Strike 2</div>
-            <div class="item-id">1</div>
+            <div class = "item-actions">
+                <div class="item-id">1</div>
+                <button class="edit">
+                    <span class="material-symbols-outlined">delete</span>
+                </button>
+                <button class = "edit">
+                    <span class="material-symbols-outlined">edit</span>
+                </button>
+            </div>
         </div>
-
         <div class="item-details">
 
             <div class="info-box">
@@ -87,7 +130,15 @@
 
         <div class="item-header">
             <div class="item-title">METAL GEAR SOLID Δ: SNAKE EATER</div>
-            <div class="item-id">2</div>
+            <div class = "item-actions">
+                <div class="item-id">2</div>
+                <button class="edit">
+                    <span class="material-symbols-outlined">delete</span>
+                </button>
+                <button class = "edit">
+                    <span class="material-symbols-outlined">edit</span>
+                </button>
+            </div>
         </div>
 
         <div class="item-details">
@@ -134,7 +185,15 @@
 
     <div class="item-header">
         <div class="item-title">Half-Life 2</div>
-        <div class="item-id">3</div>
+        <div class = "item-actions">
+            <div class="item-id">3</div>
+            <button class="edit">
+                <span class="material-symbols-outlined">delete</span>
+            </button>
+            <button class = "edit">
+                <span class="material-symbols-outlined">edit</span>
+            </button>
+        </div>
     </div>
 
     <div class="item-details">
@@ -181,7 +240,15 @@
 
         <div class="item-header">
             <div class="item-title">PRAGMATA</div>
-            <div class="item-id">4</div>
+            <div class = "item-actions">
+                <div class="item-id">4</div>
+                <button class="edit">
+                    <span class="material-symbols-outlined">delete</span>
+                </button>
+                <button class = "edit">
+                <span class="material-symbols-outlined">edit</span>
+            </button>
+        </div>
         </div>
 
         <div class="item-details">
@@ -228,7 +295,15 @@
 
         <div class="item-header">
             <div class="item-title">Hollow Knight: Silksong</div>
-            <div class="item-id">5</div>
+            <div class = "item-actions">
+                <div class="item-id">5</div>
+                <button class="edit">
+                    <span class="material-symbols-outlined">delete</span>
+                </button>
+                <button class = "edit">
+                <span class="material-symbols-outlined">edit</span>
+            </button>
+        </div>
         </div>
 
         <div class="item-details">
