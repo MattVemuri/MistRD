@@ -59,6 +59,19 @@ label {
     gap: 20px;
 }
 
+.button {
+    padding: 12px;
+    border:none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.edit {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
 /*Item Section*/
 .item {
     text-decoration: none;
@@ -70,6 +83,13 @@ label {
     grid-template-columns: 80px 2fr 1fr 1fr;
     height: 100%;
     transition: .15s;
+}
+
+.item-actions{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
 }
 
 .content-block h2 {
