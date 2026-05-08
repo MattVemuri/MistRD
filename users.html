@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Users</title>
+    <meta charset="UTF-8" />
+    <title>Users</title>
 
-  <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,delete,edit"/>
 </head>
 <body>
 
@@ -26,12 +27,13 @@
             <option value="all">Playtime</option>
             <option value="all">Owned Games</option>
         </select>
+        <span class="material-symbols-outlined add">add</span>
     </div>
     
     <div class="content-list">
 
 
-    <div class= "form"> 
+    <div class= "form hidden"> 
         <div class="item-header">
             <div class = item-title>Add User</div>
         </div>
@@ -48,7 +50,12 @@
         <div class="item-header">
             <span class = item-title>Matt</span>
 
-            <span class = item-id>1</span>
+            
+            <div class = "item-actions">
+                <span class = item-id>1</span>
+                <span class="material-symbols-outlined edit" id="delete">delete</span>
+                <span class="material-symbols-outlined edit" id="edit">edit</span>
+            </div>
         </div>
         
         <div class = "item-details">
@@ -67,7 +74,11 @@
         <div class="item-header">
             <span class = item-title>Sophia</span>
 
-            <span class = item-id>2</span>
+            <div class = "item-actions">
+                <span class = item-id>2</span>
+                <span class="material-symbols-outlined edit">delete</span>
+                <span class="material-symbols-outlined edit">edit</span>
+            </div>
         </div>
         
         <div class = "item-details">
@@ -86,7 +97,11 @@
         
         <div class="item-header">
             <span class = item-title>xXX_Gamer_XXx</span>
-            <span class = item-id>3</span>
+            <div class = "item-actions">
+                <span class = item-id>3</span>
+                <span class="material-symbols-outlined edit">delete</span>
+                <span class="material-symbols-outlined edit">edit</span>
+            </div>
         </div>
         
         <div class = "item-details">
@@ -104,7 +119,7 @@
     </div>
 
   </div>
-
+  <script src="mistrd.js"></script>
 </body>
 </html>
 
