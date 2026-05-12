@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Library</title>
+  <title>Library Games</title>
 
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back,delete,edit,home"/>
@@ -12,7 +12,6 @@
 
     <div class="container">
 
-    
     <a class="navi-btn" href="../homepage.html">
         <span class="material-symbols-outlined">home</span>
     </a>
@@ -21,8 +20,9 @@
         <span class="material-symbols-outlined">arrow_back</span>
     </button>
 
+    
 
-    <h1>Matt</h1>
+    <h1>Counter-Strike 2</h1>
 
     <div class = "controls">
         <input type = "text"
@@ -35,37 +35,15 @@
             <option value="all">Playtime</option>
             <option value="all">Completion</option>
         </select>
-        <span class="material-symbols-outlined add">add</span>
+        <!-- <span class="material-symbols-outlined add">add</span> -->
     </div>
     
     <div class="content-list">
 
-        <div class= "form hidden"> 
-            <div class="item-header">
-                <div class = item-title>Add Game</div>
-            </div>
-            <form action = "./publishers.html"> 
-                <label>Game:</label><br>
-                    <select class="filter-dropdown" name = "Game">
-                        <option value="all">Counter-Strike 2</option>
-                        <option value="all">METAL GEAR SOLID Δ: SNAKE EATER</option>
-                        <option value="all">Half-Life 2</option>
-                        <option value="all">PRAGMATA</option>
-                        <option value="all">Hollow Knight: Silksong</option>
-                    </select><br>
-                <label>Playtime:</label><br>
-                    <input type = "number" name = "Playtime" class = "add-box" min="0"><br>
-                <label>Completion:</label><br>
-                    <input type = "number" name = "Completion" class = "add-box" min="0" max="100"><br>
-                <br>
-                <input type = "submit" value = "Submit" class="filter-dropdown">
-            </form>
-        </div>
-
-        <div class="item">
+        <a class="item item-interact" href="./library.html">
             
             <div class="item-header">
-                <div class = item-title>Fortnite</div>
+                <div class = item-title>Matt</div>
                 <div class = "item-actions">
                     <div class="item-id">1</div>
                     <span class="material-symbols-outlined edit" id="delete">delete</span>
@@ -76,14 +54,37 @@
             <div class = "item-details">
                 <div class = "info-box">
                     <span class = label>Playtime</span>
-                    <span class = label-content>300</span>
+                    <span class = label-content>80</span>
                 </div>                
                 <div class = "info-box">
                     <span class = label>Completion</span>
-                    <span class = label-content>23%</span>
+                    <span class = label-content>100%</span>
                 </div>                
             </div>
-        </div>
+        </a>
+
+        <a class="item item-interact" href="./library.html">
+            
+            <div class="item-header">
+                <div class = item-title>xXX_Gamer_XXx</div>
+                <div class = "item-actions">
+                    <div class="item-id">3</div>
+                    <span class="material-symbols-outlined edit" id="delete">delete</span>
+                <span class="material-symbols-outlined edit" id="edit">edit</span>
+                </div>
+            </div>
+
+            <div class = "item-details">
+                <div class = "info-box">
+                    <span class = label>Playtime</span>
+                    <span class = label-content>680</span>
+                </div>                
+                <div class = "info-box">
+                    <span class = label>Completion</span>
+                    <span class = label-content>100%</span>
+                </div>                
+            </div>
+        </a>
     </div>
 
     </div>
