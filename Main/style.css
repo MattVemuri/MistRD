@@ -207,7 +207,7 @@ label {
     display:none;
 }
 
-.edit, .add{
+.edit, .add, .delete{
     justify-content: center;
     border-radius: 8px;
     padding: 6px 12px;
@@ -221,9 +221,16 @@ label {
     background-color: rgba(255,255,255,.08);
 }
 
-.edit:hover, .add:hover{
+.edit:hover, .add:hover, .delete:hover{
     background-color:  rgba(255,255,255,.2);
     box-shadow: inset 5px 5px 10px rgb(0,0,0,.5);
+}
+
+.edit-input{
+    width: 100%;
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid #888;
 }
 
 /* .back-btn{
