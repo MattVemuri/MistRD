@@ -44,7 +44,7 @@ CREATE TABLE Library (
 );
 
 CREATE TABLE Library_Games (
-    lg_ID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    lgID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     gameID int NOT NULL,                            
     libraryID int NOT NULL,                         
     playtime int NOT NULL,

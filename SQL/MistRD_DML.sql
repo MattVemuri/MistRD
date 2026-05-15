@@ -1,13 +1,23 @@
 ----------------------------
 -- Games
 
-SELECT * FROM Games;
+SELECT  g.name,
+        g.copiesSold,
+        p.name AS publisherName,
+        g.genre,
+        g.developer,
+        g.releaseDate,
+        g.price,
+        g.estimatedPlaytime
+FROM Games g
+JOIN Publishers p ON p.publisherID = g.publisherID;
 
-INSERT INTO Game (name, copiesSold, genre, developer, releaseDate, price, estimatedPlaytime)
-VALUES (@nameInput, @copiesSoldInput, @genreInput, @developerInput, @releaseDateInput, @priceInput, @estimatedPlaytimeInput)
+INSERT INTO Games (name, publisherID, copiesSold, genre, developer, releaseDate, price, estimatedPlaytime)
+VALUES (@nameInput, @publisherIDInput, @copiesSoldInput, @genreInput, @developerInput, @releaseDateInput, @priceInput, @estimatedPlaytimeInput);
 
 UPDATE Games
 SET name = @nameInput,
+    publisherID = @publisherIDInput,
     copiesSold = @copiesSoldInput,
     genre = @genreInput,
     developer = @developerInput,
@@ -21,9 +31,12 @@ WHERE gameID = @gameIDInput;
 ----------------------------
 -- Publishers
 
-SELECT * FROM Publishers;
+SELECT  p.publisherID,
+        p.webPage,
+        p.email
+FROM Publishers p;
 
-INSERT INTO Publisher (name, webPage, email)
+INSERT INTO Publishers (name, webPage, email)
 VALUES (@nameInput, @webPageInput, @emailInput);
 
 UPDATE Publishers
@@ -37,9 +50,12 @@ WHERE publisherID = @publisherIDInput;
 ----------------------------
 -- Users
 
-SELECT * FROM Users;
+SELECT  u.username,
+        u.ownedGames,
+        u.totalPlaytime
+FROM Users u;
 
-INSERT INTO User (username, ownedGames, totalPlaytime)
+INSERT INTO Users (username, ownedGames, totalPlaytime)
 VALUES (@usernameInput, @ownedGamesInput, @totalPlaytimeInput);
 
 UPDATE Users
@@ -53,10 +69,18 @@ WHERE userID = @userIDInput;
 ----------------------------
 -- Library_Games
 
-SELECT * FROM Library_Games;
+SELECT  lg.lgID,
+        u.username,
+        g.name AS gameName,
+        lg.playtime,
+        lg.completion
+FROM Library_Games lg
+JOIN Library l ON lg.libraryID = l.libraryID
+JOIN Users u ON l.userID = u.userID
+JOIN Games g ON lg.gameID = g.gameID;
 
-INSERT INTO Library_Game (playtime, completion)
-VALUES (@playtimeInput, @completionInput);
+INSERT INTO Library_Games (userID, gameID, playtime, completion)
+VALUES (@userIDInput, @gameIDInput, @playtimeInput, @completionInput);
 
 UPDATE Library_Games
 SET playtime = @playtimeInput,
