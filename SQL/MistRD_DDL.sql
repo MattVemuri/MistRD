@@ -141,4 +141,4 @@ END //
 -- SELECT * from Games;
 -- SELECT * from Publishers;
 
-DELIMITER;
+DELIMITER ;
