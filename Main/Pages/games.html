@@ -10,7 +10,6 @@
 </head>
 <body>
   <div class="container">
-
     <a class="navi-btn" href="../homepage.html">
         <span class="material-symbols-outlined">home</span>
     </a>
@@ -89,7 +88,9 @@
             <div class="item-title">Counter-Strike 2</div>
             <div class = "item-actions">
                 <div class="item-id">1</div>
-                <span class="material-symbols-outlined delete">delete</span>
+                <form method="POST" action="/games/delete">
+                    <button type="submit" class="material-symbols-outlined delete">delete</button>
+                </form>
                 <span class="material-symbols-outlined edit">edit</span>
             </div>
         </div>

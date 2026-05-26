@@ -215,6 +215,9 @@ label {
     pointer-events:auto;
     cursor: pointer;
     transition: background 0.5s;
+    border: none;
+    background: none;
+    color:white;
 }
 
 .add{

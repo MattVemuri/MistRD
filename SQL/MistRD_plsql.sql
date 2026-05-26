@@ -1,0 +1,7 @@
+DROP PROCEDURE IF EXISTS remove_csgo;
+DELIMITER //
+CREATE PROCEDURE remove_csgo()
+BEGIN
+    DELETE FROM Games WHERE Games.gameID = 1;
+END //
+DELIMITER ;

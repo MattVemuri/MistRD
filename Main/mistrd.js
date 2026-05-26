@@ -34,16 +34,12 @@ if(editBtns){
     })
 }
 
-const deleteBtns = document.querySelectorAll(".delete");
-if(deleteBtns){
-    deleteBtns.forEach(deleteBtn =>{
-        deleteBtn.addEventListener('click',(event)=>{
-            event.preventDefault()
-            event.stopPropagation()
-            alert("Pretend this got deleted")
-        });
-    })
-    
-}
-
-const 
+// const deleteBtns = document.querySelectorAll(".delete");
+// if(deleteBtns){
+//     deleteBtns.forEach(deleteBtn =>{
+//         deleteBtn.addEventListener('click', async (event)=>{
+//             event.preventDefault()
+//             event.stopPropagation()
+//         });
+//     })   
+// }
