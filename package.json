@@ -4,7 +4,7 @@
   "description": "A database interface to let users filter and sort through steam games",
   "main": "mistrd.js",
   "scripts": {
-    "dev":"npx nodemon app.js",
+    "dev": "npx nodemon app.js",
     "production": "npx forever start app.js",
     "stop_production": "npx forver stop app.js"
   },
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/MattVemuri/MistRD#readme",
   "dependencies": {
     "express": "^5.2.1",
+    "filestream": "^5.0.0",
     "forever": "^1.0.1",
     "mysql2": "^3.22.3",
     "node": "^26.0.0",
