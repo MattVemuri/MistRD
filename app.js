@@ -1,50 +1,405 @@
-/*
-    SETUP
-*/
+const express = require('express');
+const app = express();
+const path = require('path');
+const PORT = 5572;
 
-// Express
-const express = require('express');  // We are using the express library for the web server
-const app = express();               // We need to instantiate an express object to interact with the server in our code
-const path = require('path')
-const PORT = 5572;     // Set a port number
-const db = require('./db-connector')
-
-
-// app.use((req, res, next) => {
-//     console.log("REQUEST:", req.method, req.url);
-//     next();
-// });
+const db = require('./db-connector');
+const handlebars = require('express-handlebars');
+const { format } = require('path');
 
 app.use(express.static(__dirname));
 
-app.get('/', async function (req, res) {
-    res.sendFile(path.join(__dirname, "./Main/homepage.html"));
+app.engine('.hbs', handlebars.engine({
+    extname: '.hbs',
+    partialsDir: './views/partials'
+}));
+
+app.set('view engine', '.hbs');
+app.set('views', './views');
+
+// HOME PAGE
+app.get('/', async (req, res) => {
+    // res.sendFile(path.join(__dirname, './Main/homepage.html'));
+    try{
+        var [rows] = await db.query('SELECT COUNT(*) AS count FROM Games');
+        const gCount = rows[0].count
+        var [rows] = await db.query('SELECT COUNT(*) AS count FROM Publishers');
+        const pCount = rows[0].count
+        var [rows] = await db.query('SELECT COUNT(*) AS count FROM Users');
+        const uCount = rows[0].count
+        var [rows] = await db.query('SELECT COUNT(*) AS count FROM Library_Games');
+        const lgCount = rows[0].count
+        var [rows] = await db.query('SELECT COUNT(*) AS count FROM Library');
+        const lCount = rows[0].count
+        res.render('homepage',{
+            gameCount: gCount,
+            publisherCount: pCount,
+            userCount: uCount,
+            lgCount: lgCount,
+            lCount: lCount
+        })
+    }catch(error){
+        console.error(error)
+        console.log('an error occured when loading the homepage')
+    }
+    
 });
 
-app.post('/games/delete', async function (req, res) {
-    try{
-        const query1 = `CALL remove_csgo();`;
-        await db.query(query1);
-        console.log('Removed CS:GO')
-        res.redirect('/Main/Pages/games.html')
-    }catch(error){
-        console.error('Failed to delete CSGO: ',error);
-        res.status(500).send('An error occured');
+app.post('/reset', async (req, res)=>{
+    try {
+        await db.query(`
+            CALL load_db();
+        `);
+        console.log('reset db');
+        res.redirect('/');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('An error occurred');
+    }
+})
+
+// GAMES PAGE
+app.get('/games', async (req, res) => {
+    try {
+        // grab games
+        const [rows] = await db.query(`
+            SELECT * FROM Games
+        `);
+        // format for site
+        const formatted = rows.map(games => {
+            const date = new Date(games.releaseDate)
+            var formattedPlaytime = games.estimatedPlaytime
+            if(formattedPlaytime==null){
+                formattedPlaytime='Unknown'
+            }
+            // console.log(formattedPlaytime)
+            return{
+                ...games,
+                releaseDate: `${date.getMonth()+1}-${date.getDate()}-${date.getFullYear()}`,
+                estimatedPlaytime: formattedPlaytime
+            }
+        })
+        // render out
+        res.render('games',
+            {
+                layout: 'notMain',
+                items: formatted,
+                title: 'Games'
+            }
+        );
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Failed to load games');
     }
 });
 
-app.post('/Main/reset', async function (req, res) {
-    try{
-        const query1 = `CALL load_db();`
-        await db.query(query1);
-        console.log('Reset database')
-        res.redirect('/Main/homepage.html')
-    }catch(error){
-        console.error('Failed to reset: ',error);
-        res.status(500).send('An error occured');
+app.post('/games/delete/:id', async (req, res) => {
+    try {
+        const gameID = req.params.id
+        await db.query(`DELETE FROM Games WHERE gameID = ?;`,[gameID]);
+
+        console.log(`Removed game with ID: ${gameID}`);
+
+        res.redirect('/games');
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('An error occurred');
     }
 });
 
-app.listen(PORT, function(){            // This is the basic syntax for what is called the 'listener' which receives incoming requests on the specified PORT.
-    console.log('Express started on http://localhost:' + PORT + '; press Ctrl-C to terminate.')
+// PUBLISHERS PAGE
+app.get('/publishers', async (req, res) => {
+    try {
+        // grab games
+        const [rows] = await db.query(`
+            SELECT * FROM Publishers
+        `);
+        // render out
+        res.render('publishers',
+            {
+                layout: 'notMain',
+                name: 'Publishers',
+                description: 'This page lets users interact with the Publishers table',
+                items: rows,
+                title: 'Publisher',
+                showAll: true
+            }
+        );
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Failed to load publishers');
+    }
+});
+
+app.post('/publishers/delete/:id', async (req, res) => {
+    try {
+        const publisherID = req.params.id
+        await db.query(`DELETE FROM Publishers WHERE publisherID = ?;`,[publisherID]);
+
+        console.log(`Removed publisher with ID: ${publisherID}`);
+
+        res.redirect('/publishers');
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('An error occurred');
+    }
+});
+
+app.get('/publishers/:id', async (req, res)=>{
+    const publisherID = req.params.id
+    try{
+        // grab librarygames
+        const [rows] = await db.query(`
+            SELECT p.name as name,
+                g.name as gameName,
+                p.publisherID,
+                copiesSold,
+                genre,
+                developer,
+                price, 
+                releaseDate,
+                estimatedPlaytime         
+            FROM Publishers p
+            JOIN Games g on p.publisherID = g.publisherID
+            WHERE p.publisherID = ?
+        `, [publisherID]);
+
+        const formatted = rows.map(games => {
+        const date = new Date(games.releaseDate)
+        var formattedPlaytime = games.estimatedPlaytime
+        if(formattedPlaytime==null){
+            formattedPlaytime='Unknown'
+        }
+        // console.log(formattedPlaytime)
+        return{
+            ...games,
+            releaseDate: `${date.getMonth()+1}-${date.getDate()}-${date.getFullYear()}`,
+            estimatedPlaytime: formattedPlaytime
+        }
+        })
+
+        // render out
+        res.render('publishers',
+            {
+                layout: 'notMain',
+                name: formatted[0].name,
+                description: 'This page lets users interact with the Publishers table for a single publisher',
+                items: formatted,
+                title: 'Publisher',
+                showAll: false
+            }
+        );
+    }catch(error){
+        console.error(error)
+        console.log(`Failed to load publisher with id: ${publisherID}`)
+    }
+})
+
+// USERS PAGE
+app.get('/users', async (req, res) => {
+    try {
+        // grab games
+        const [rows] = await db.query(`
+            SELECT * FROM Users
+        `);
+        // render out
+        res.render('users',
+            {
+                layout: 'notMain',
+                items: rows,
+                title: 'Users'
+            }
+        );
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Failed to load publishers');
+    }
+});
+
+app.post('/users/delete/:id', async (req, res) => {
+    try {
+        const userID = req.params.id
+        await db.query(`DELETE FROM Users WHERE userID = ?;`,[userID]);
+
+        console.log(`Removed user with ID: ${userID}`);
+
+        res.redirect('/users');
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('An error occurred');
+    }
+});
+
+// LIBRARY GAMES PAGE
+app.get('/libraryGames', async (req,res) => {
+    try {
+        // grab librarygames
+        const [rows] = await db.query(`
+            SELECT g.name as gameName,
+                    u.username as username,
+                    u.userID as userID,
+                    playtime,
+                    completion,
+                    lg.lgID
+            FROM Library_Games lg
+            JOIN Games g ON lg.gameID = g.gameID
+            JOIN Library l ON lg.libraryID = l.libraryID
+            JOIN Users u ON l.userID = u.userID
+        `);
+        
+        // render out
+        res.render('libraryGames',
+            {
+                layout: 'notMain',
+                name: 'Library Games',
+                description: 'This page lets users interact with the Library_Games table',
+                items: rows,
+                title: 'LibraryGames',
+                showAll: true
+
+            }
+        );
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(`Failed to load library games`);
+    }
+})
+
+app.post('/libraryGames/origin/delete/:id', async (req, res) => {
+    try {
+        const lgID = req.params.id        
+        await db.query(`DELETE FROM Library_Games WHERE lgID = ?;`,[lgID]);
+        console.log(`Removed library_game with ID: ${lgID}`);
+        res.redirect('/libraryGames/')
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('An error occurred');
+    }
+});
+
+app.get('/libraryGames/:id', async (req, res) => {
+    const gameID = req.params.id
+    try {
+        // grab librarygames
+        const [rows] = await db.query(`
+            SELECT g.name as gameName,
+                    u.username as username,
+                    u.userID as userID,
+                    playtime,
+                    completion,
+                    lg.lgID
+            FROM Library_Games lg
+            JOIN Games g ON lg.gameID = g.gameID
+            JOIN Library l ON lg.libraryID = l.libraryID
+            JOIN Users u ON l.userID = u.userID
+            WHERE g.gameID = ?
+        `, [gameID]);
+        
+        if(rows.length == 0){
+            res.redirect('/libraryGames')
+        }
+
+        // render out
+        res.render('libraryGames',
+            {
+                layout: 'notMain',
+                name: rows[0].gameName,
+                description: 'This page lets users interact with the Library_Games table for a single game',
+                items: rows,
+                title: 'LibraryGames',
+                showAll: false
+            }
+        );
+    } catch (error) {
+        console.error(error);
+        res.status(500).send(`Failed to load library games for game with id: ${gameID}`);
+    }
+});
+
+app.post('/libraryGames/delete/:id', async (req, res) => {
+    try {
+        const lgID = req.params.id
+        const [rows] = await db.query(`SELECT gameID FROM Library_Games WHERE lgID = ?`,[lgID]);
+        const gameID = rows[0].gameID
+        const [remainingRows] = await db.query(`
+            SELECT COUNT(*) AS count
+            FROM Library_Games
+            WHERE gameID = ?`,[gameID]);
+        
+        await db.query(`DELETE FROM Library_Games WHERE lgID = ?;`,[lgID]);
+
+        console.log(`Removed library_game with ID: ${lgID}`);
+        
+        
+        if(remainingRows[0].count-1 < 1){
+            res.redirect('/libraryGames/')
+        }else{
+            res.redirect(`/libraryGames/${gameID}`);
+        }
+        
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('An error occurred');
+    }
+});
+
+// LIBRARY PAGE
+app.get('/libraries', async (req,res)=>{
+    try{
+        const [rows] = await db.query(`
+            SELECT libraryID,
+                     u.username as username
+            FROM Library
+            JOIN Users u ON Library.userID = u.userID`)
+        res.render('library',{
+            layout: 'notMain',
+            name: 'Libraries',
+            description: 'This page lets you view the Library table',
+            items: rows,
+            individual: false
+        })
+    }catch(error){
+        console.error(error)
+        console.log('Failed to load libraries page')
+    }
+})
+
+app.get('/library/:id', async (req,res)=>{
+    const userID = req.params.id
+    try{
+        const [rows] = await db.query(`
+            SELECT l.libraryID,
+                    u.username as username,
+                    g.name as gameName,
+                    g.gameID as gameID,
+                    lg.lgID as lgID,
+                    lg.playtime as playtime,
+                    lg.completion as completion
+            FROM Library AS l
+            JOIN Users u ON l.userID = u.userID
+            JOIN Library_Games lg ON l.libraryID = lg.libraryID
+            JOIN Games g ON g.gameID = lg.gameID
+            WHERE u.userID = ?;
+        `, [userID]);
+
+        res.render('library', {
+            layout: 'notMain',
+            name: rows[0].username,
+            description: 'This page lets you view the Library table for a single user',
+            items: rows,
+            individual: true
+        });
+    }catch(error){
+        console.error(error)
+        console.log(`Failed to load library page for id: ${userID}`)
+    }
+})
+
+app.listen(PORT, () => {
+    console.log(`Express started on http://localhost:${PORT}`);
 });

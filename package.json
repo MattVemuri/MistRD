@@ -20,6 +20,7 @@
   "homepage": "https://github.com/MattVemuri/MistRD#readme",
   "dependencies": {
     "express": "^5.2.1",
+    "express-handlebars": "^9.0.1",
     "filestream": "^5.0.0",
     "forever": "^1.0.1",
     "mysql2": "^3.22.3",

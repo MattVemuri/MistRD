@@ -1,0 +1,80 @@
+<a class="item item-interact" href="/libraryGames/{{this.gameID}}">
+
+    <div class="item-header">
+
+        <div class="item-title">
+            {{this.name}}
+        </div>
+
+        <div class="item-actions">
+
+            <div class="item-id">
+                {{this.gameID}}
+            </div>
+
+            <form method="POST" action="/games/delete/{{this.gameID}}">
+                <button type="submit" class="material-symbols-outlined delete">
+                    delete
+                </button>
+            </form>
+            <span class="material-symbols-outlined edit">
+                edit
+            </span>
+
+        </div>
+    </div>
+
+    <div class="item-details">
+
+        <div class="info-box">
+            <span class="label">Publisher ID</span>
+            <span class="label-content">
+                {{this.publisherID}}
+            </span>
+        </div>
+
+        <div class="info-box">
+            <span class="label">Copies Sold</span>
+            <span class="label-content">
+                {{this.copiesSold}}
+            </span>
+        </div>
+
+        <div class="info-box">
+            <span class="label">Genre</span>
+            <span class="label-content">
+                {{this.genre}}
+            </span>
+        </div>
+
+        <div class="info-box">
+            <span class="label">Developer</span>
+            <span class="label-content">
+                {{this.developer}}
+            </span>
+        </div>
+
+        <div class="info-box">
+            <span class="label">Release Date</span>
+            <span class="label-content">
+                {{this.releaseDate}}
+            </span>
+        </div>
+
+        <div class="info-box">
+            <span class="label">Price</span>
+            <span class="label-content">
+                ${{this.price}}
+            </span>
+        </div>
+
+        <div class="info-box">
+            <span class="label">Estimated Playtime</span>
+            <span class="label-content">
+                {{this.estimatedPlaytime}}
+            </span>
+        </div>
+
+    </div>
+
+</a>

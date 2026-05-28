@@ -1,0 +1,60 @@
+<div class="container">
+<!-- <button class="navi-btn" id="reset-btn">
+    <span>Reset</span>
+</button> -->
+<form method="POST" action="/reset">
+    <button type="submit" class="navi-btn" id="reset-btn">Reset</button>
+</form>
+
+<h1 class="big-title">MistRD</h1>
+
+<div class="content-list">
+    
+    <a class="item item-interact" href="/games">
+        <div class="item-header">
+            <span class="item-title">View Games</span>
+        </div>
+        <div class="item-details">
+            <span class="label-content">{{gameCount}} Games</span>
+        </div>
+    </a>
+
+    <a class="item item-interact" href="/publishers">
+        <div class="item-header">
+            <span class="item-title">View Publishers</span>
+        </div>
+        <div class="item-details">
+            <span class="label-content">{{publisherCount}} Publishers</span>
+        </div>
+    </a>
+
+    <a class="item item-interact" href="/users">
+        <div class="item-header">
+            <span class="item-title">View Users</span>
+        </div>
+        <div class="item-details">
+            <span class="label-content">{{userCount}} Users</span>
+        </div>
+    </a>
+
+    <a class="item item-interact" href="/libraryGames">
+        <div class="item-header">
+            <span class="item-title">View Library Games</span>
+        </div>
+        <div class="item-details">
+            <span class="label-content">{{lgCount}} Owned Games</span>
+        </div>
+    </a>
+
+    <a class="item item-interact" href="/libraries">
+        <div class="item-header">
+            <span class="item-title">View Libraries</span>
+        </div>
+        <div class="item-details">
+            <span class="label-content">{{lCount}} Libraries</span>
+        </div>
+    </a>
+
+</div>
+
+</div>

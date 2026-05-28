@@ -1,0 +1,35 @@
+<h1>Users</h1>
+<h3>This page lets users interact with the Users table</h3>
+
+<div class = "controls">
+    <input type = "text"
+    placeholder="Search users"
+    class = "search-box">
+    <select class="filter-dropdown">
+        <option value="all">ID</option>
+        <option value="all">A-Z</option>
+        <option value="all">Playtime</option>
+        <option value="all">Owned Games</option>
+    </select>
+    <span class="material-symbols-outlined add">add</span>
+</div>
+
+<div class="content-list">
+    
+<div class= "form hidden"> 
+        <div class="item-header">
+            <div class = item-title>Add User</div>
+        </div>
+        <form action = "./users.html"> 
+            <label>Username:</label><br>
+                <input type = "text" name = "user" class = "add-box"><br>
+            <br>
+            <input type = "submit" value = "Submit" class="filter-dropdown">
+        </form>
+</div>
+
+{{#each items}}
+    {{> userCard}}
+{{/each}}
+
+</div>
