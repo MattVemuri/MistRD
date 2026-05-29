@@ -119,10 +119,9 @@ app.get('/publishers', async (req, res) => {
         res.render('publishers',
             {
                 layout: 'notMain',
-                name: 'Publishers',
                 description: 'This page lets users interact with the Publishers table',
                 items: rows,
-                title: 'Publisher',
+                title: 'Publishers',
                 showAll: true
             }
         );
@@ -152,8 +151,9 @@ app.get('/publishers/:id', async (req, res)=>{
     try{
         // grab librarygames
         const [rows] = await db.query(`
-            SELECT p.name as name,
-                g.name as gameName,
+            SELECT p.name as title,
+                g.name as name,
+                gameID,
                 p.publisherID,
                 copiesSold,
                 genre,
@@ -179,15 +179,13 @@ app.get('/publishers/:id', async (req, res)=>{
             estimatedPlaytime: formattedPlaytime
         }
         })
-
         // render out
         res.render('publishers',
             {
                 layout: 'notMain',
-                name: formatted[0].name,
+                title: formatted[0].title,
                 description: 'This page lets users interact with the Publishers table for a single publisher',
                 items: formatted,
-                title: 'Publisher',
                 showAll: false
             }
         );
