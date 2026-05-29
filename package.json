@@ -5,8 +5,8 @@
   "main": "mistrd.js",
   "scripts": {
     "dev": "npx nodemon app.js",
-    "production": "npx forever start app.js",
-    "stop_production": "npx forver stop app.js"
+    "production": "npx pm2 start app.js",
+    "stop_production": "npx pm2 stop app.js"
   },
   "repository": {
     "type": "git",
@@ -20,11 +20,13 @@
   "homepage": "https://github.com/MattVemuri/MistRD#readme",
   "dependencies": {
     "express": "^5.2.1",
+    "express-handlebars": "^9.0.1",
     "filestream": "^5.0.0",
     "forever": "^1.0.1",
     "mysql2": "^3.22.3",
     "node": "^26.0.0",
     "nodemon": "^3.1.14",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "pm2": "^7.0.1"
   }
 }

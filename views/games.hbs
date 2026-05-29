@@ -1,0 +1,68 @@
+<h1>Games</h1>
+<h3>This page lets users interact with the Games table</h3>
+
+<div class="controls">
+
+    <input type="text" placeholder="Search games" class="search-box">
+    
+    <select class="filter-dropdown">
+        <option value="id">ID</option>
+        <option value="az">A-Z</option>
+        <option value="copiesSold">Copies Sold</option>
+        <option value="genre">Genre</option>
+        <option value="developer">Developer</option>
+        <option value="publisher">Publisher</option>
+        <option value="releaseDate">Release Date</option>
+        <option value="price">Price</option>
+        <option value="estimatedPlaytime">Estimated Playtime</option>
+    </select>
+
+    <span class="material-symbols-outlined add">
+        add
+    </span>
+
+</div>
+
+<div class="content-list">
+    <div class= "form hidden"> 
+        <div class="item-header">
+            <div class = item-title>Add Game</div>
+        </div>
+        <form action = "./games.html"> 
+            <label>Game:</label><br>
+                <input type = "text" name = "publisher" class = "add-box"><br>
+            <label>Publisher:</label><br>
+                <select class="filter-dropdown">
+                    <option value="all">Valve</option>
+                    <option value="all">Konami</option>
+                    <option value="all">CAPCOM</option>
+                    <option value="all">Team Cherry</option>
+                </select><br>
+            <label>Genre:</label><br>
+                <select class="filter-dropdown">
+                    <option value="all">FPS</option>
+                    <option value="all">Stealth</option>
+                    <option value="all">Action-Advencture</option>
+                    <option value="all">Metroidvania</option>
+                    <option value="all">Rougelike</option>
+                    <option value="all">Simulation</option>
+                    <option value="all">Role-Playing</option>
+                </select><br>
+                <!--<input type = "text" name = "genre" class = "add-box">-->
+            <label>Developer:</label><br>
+                <input type = "text" name = "developer" class = "add-box"><br>
+            <label>Release Date:</label><br>
+                <input type = "date" name = "releasedate" class = "add-box"><br>
+            <label>Price:</label><br>
+                <input type = "number" name = "price" class = "add-box" step="0.01" min="0" placeholder="0.00"><br>
+            <label>Estimated Playtime:</label><br>
+                <input type = "number" name = "estimatedplaytime" class = "add-box" min="0"><br>
+            <br>
+            <input type = "submit" value = "Submit" class="button">
+        </form>
+    </div>
+
+    {{#each items}}
+        {{> gameCard}}
+    {{/each}}
+</div>

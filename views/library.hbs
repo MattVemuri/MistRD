@@ -1,0 +1,27 @@
+<h1>{{name}}</h1>
+<h3>{{description}}</h3>
+<div class = "controls">
+    <input type = "text"
+        placeholder="Search library"
+        class = "search-box"
+    >
+    <select class="filter-dropdown">
+        <option value="all">ID</option>
+        <option value="all">A-Z</option>
+        <option value="all">Playtime</option>
+        <option value="all">Completion</option>
+    </select>
+    <!-- <span class="material-symbols-outlined add">add</span> -->
+</div>
+
+<div class="content-list">
+    {{#if individual}}
+        {{#each items}}
+            {{> libraryGameCard}}
+        {{/each}}
+    {{else}}
+        {{#each items}}
+            {{> libraryCard}}
+        {{/each}}
+    {{/if}}
+</div>

@@ -1,0 +1,44 @@
+<h1>{{title}}</h1>
+<h3>{{description}}</h3>
+
+<div class = "controls">
+    <input type = "text"
+    placeholder="Search publishers"
+    class = "search-box">
+    <select class="filter-dropdown">
+        <option value="all">ID</option>
+        <option value="all">A-Z</option>
+        <option value="all">Published Games</option>
+    </select>
+    <span class="material-symbols-outlined add">add</span>
+</div>
+
+<div class="content-list">
+    
+<div class= "form hidden"> 
+    <div class="item-header">
+        <div class = item-title>Add Publisher</div>
+    </div>
+    <form action = "./publishers.html"> 
+        <label>Publisher:</label><br>
+            <input type = "text" name = "publisher" class = "add-box"><br>
+        <label>Webpage:</label><br>
+            <input type = "text" name = "webpage" class = "add-box"><br>
+        <label>Email:</label><br>
+            <input type = "text" name = "genre" class = "add-box"><br>
+        <br>
+        <input type = "submit" value = "Submit" class="filter-dropdown">
+    </form>
+</div>
+
+    {{#if showAll}}
+        {{#each items}}
+            {{> publisherCard}}
+        {{/each}}
+    {{else}}
+        {{#each items}}
+            {{> gameCard}}
+        {{/each}}
+    {{/if}}
+
+</div> 

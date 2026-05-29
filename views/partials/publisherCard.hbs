@@ -1,0 +1,25 @@
+<a class="item item-interact" href="/publishers/{{this.publisherID}}">
+    <div class="item-header">
+        <div class = item-title>{{this.name}}</div>
+        <div class = "item-actions">
+            <div class="item-id">{{this.publisherID}}</div>
+            <form method="POST" action="/publishers/delete/{{this.publisherID}}">
+                <button type="submit" class="material-symbols-outlined delete">
+                    delete
+                </button>
+            </form>
+            <span class="material-symbols-outlined edit">edit</span>
+        </div>
+    </div>
+
+    <div class = "item-details">
+        <div class="info-box">
+            <span class="label">Webpage</span>
+            <span class="label-content">{{this.webPage}}</span>
+        </div>
+        <div class="info-box">
+            <span class="label">Email</span>
+            <span class="label-content">{{this.email}}</span>
+        </div>
+    </div>
+</a>
