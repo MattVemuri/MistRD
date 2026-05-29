@@ -5,7 +5,8 @@ const PORT = 5572;
 
 const db = require('./db-connector');
 const handlebars = require('express-handlebars');
-const { format } = require('path');
+// const { format } = require('path');
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname));
 
@@ -47,9 +48,7 @@ app.get('/', async (req, res) => {
 
 app.post('/reset', async (req, res)=>{
     try {
-        await db.query(`
-            CALL load_db();
-        `);
+        await db.query('CALL load_db();');
         console.log('reset db');
         res.redirect('/');
     } catch (error) {
@@ -65,6 +64,9 @@ app.get('/games', async (req, res) => {
         const [rows] = await db.query(`
             SELECT * FROM Games
         `);
+        if (!rows.length) {
+            return res.redirect('/');
+        }
         // format for site
         const formatted = rows.map(games => {
             const date = new Date(games.releaseDate)
@@ -115,6 +117,9 @@ app.get('/publishers', async (req, res) => {
         const [rows] = await db.query(`
             SELECT * FROM Publishers
         `);
+        if (!rows.length) {
+           return res.redirect('/');
+        }
         // render out
         res.render('publishers',
             {
@@ -165,7 +170,12 @@ app.get('/publishers/:id', async (req, res)=>{
             JOIN Games g on p.publisherID = g.publisherID
             WHERE p.publisherID = ?
         `, [publisherID]);
-
+        if (!rows.length) {
+           return res.redirect('/');
+        }
+        if (!rows.length) {
+            return res.redirect('/');
+        }
         const formatted = rows.map(games => {
         const date = new Date(games.releaseDate)
         var formattedPlaytime = games.estimatedPlaytime
@@ -202,6 +212,9 @@ app.get('/users', async (req, res) => {
         const [rows] = await db.query(`
             SELECT * FROM Users
         `);
+        if (!rows.length) {
+            return res.redirect('/');
+        }
         // render out
         res.render('users',
             {
@@ -247,7 +260,9 @@ app.get('/libraryGames', async (req,res) => {
             JOIN Library l ON lg.libraryID = l.libraryID
             JOIN Users u ON l.userID = u.userID
         `);
-        
+        if (!rows.length) {
+            return res.redirect('/');
+        }
         // render out
         res.render('libraryGames',
             {
@@ -296,7 +311,9 @@ app.get('/libraryGames/:id', async (req, res) => {
             JOIN Users u ON l.userID = u.userID
             WHERE g.gameID = ?
         `, [gameID]);
-        
+        if (!rows.length) {
+            return res.redirect('/');
+        }
         if(rows.length == 0){
             res.redirect('/libraryGames')
         }
@@ -322,6 +339,9 @@ app.post('/libraryGames/delete/:id', async (req, res) => {
     try {
         const lgID = req.params.id
         const [rows] = await db.query(`SELECT gameID FROM Library_Games WHERE lgID = ?`,[lgID]);
+        if (!rows.length) {
+            return res.redirect('/');
+        }
         const gameID = rows[0].gameID
         const [remainingRows] = await db.query(`
             SELECT COUNT(*) AS count
@@ -354,6 +374,9 @@ app.get('/libraries', async (req,res)=>{
                      u.username as username
             FROM Library
             JOIN Users u ON Library.userID = u.userID`)
+        if (!rows.length) {
+            return res.redirect('/');
+        }
         res.render('library',{
             layout: 'notMain',
             name: 'Libraries',
@@ -363,7 +386,7 @@ app.get('/libraries', async (req,res)=>{
         })
     }catch(error){
         console.error(error)
-        console.log('Failed to load libraries page')
+        res.status(500).send('An error occurred');
     }
 })
 
@@ -384,7 +407,9 @@ app.get('/library/:id', async (req,res)=>{
             JOIN Games g ON g.gameID = lg.gameID
             WHERE u.userID = ?;
         `, [userID]);
-
+        if (!rows.length) {
+            return res.redirect('/');
+        }
         res.render('library', {
             layout: 'notMain',
             name: rows[0].username,
@@ -394,7 +419,7 @@ app.get('/library/:id', async (req,res)=>{
         });
     }catch(error){
         console.error(error)
-        console.log(`Failed to load library page for id: ${userID}`)
+        res.status(500).send('An error occurred');
     }
 })
 
