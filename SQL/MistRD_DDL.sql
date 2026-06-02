@@ -114,10 +114,6 @@ BEGIN
         WHERE Library_Games.gameID = Games.gameID
     );
 
-    -- Playtime, GameID and LibraryID counting in Subquery
-    SET FOREIGN_KEY_CHECKS = 1;
-    COMMIT;
-
     UPDATE Users
     SET ownedGames = (SELECT COUNT(DISTINCT Library_Games.GameID)
     FROM Library
@@ -133,6 +129,10 @@ BEGIN
     ON Library.LibraryID = Library_Games.LibraryID
     WHERE Library.userID = Users.userID
     );
+
+    -- Playtime, GameID and LibraryID counting in Subquery
+    SET FOREIGN_KEY_CHECKS = 1;
+    COMMIT;
 END //
 
 

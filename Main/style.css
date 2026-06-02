@@ -192,14 +192,14 @@ label {
     cursor: pointer;
     color: white;
     font-size:1rem;
-    transition: background 0.5s;
+    transition: 0.5s;
 
     text-decoration: none;
 }
 
-.navi-btn:hover, .sidebar-btn:hover{
+.navi-btn:hover, .sidebar-btn:hover, .edit:hover, .add:hover, .delete:hover{
     background-color:  rgba(255,255,255,.2);
-    box-shadow: inset 5px 5px 16px rgb(0,0,0,.5);
+    box-shadow: inset 0px 0px 16px rgb(0,0,0,.5);
 }
 
 .item-interact:hover{
@@ -219,7 +219,7 @@ label {
     font-weight: bold;
     pointer-events:auto;
     cursor: pointer;
-    transition: background 0.5s;
+    transition: 0.5s;
     border: none;
     background: none;
     color:white;
@@ -227,11 +227,6 @@ label {
 
 .add{
     background-color: rgba(255,255,255,.08);
-}
-
-.edit:hover, .add:hover, .delete:hover{
-    background-color:  rgba(255,255,255,.2);
-    box-shadow: inset 5px 5px 10px rgb(0,0,0,.5);
 }
 
 .edit-input{
@@ -248,7 +243,7 @@ label {
     transform: translateY(-50%);
     left: 20px;
     background-color: rgba(142, 142, 142, 0.5);
-    width: 85px;
+    width: 4%;
     padding:20px;
     border-radius: 8px;
     display: flex;
@@ -260,8 +255,10 @@ label {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 
-    background-color: rgba(255,255,255,.08);
+    /* background-color: rgba(255,255,255,.08); */
+    background-color: #fff0;
     border: none;
     padding: 10px 10px;
     border-radius: 8px;
@@ -269,24 +266,17 @@ label {
     aspect-ratio: 1;
     cursor: pointer;
     color: white;
-    font-size:1rem;
-    transition: background 0.5s;
+    /* font-size:.6vi; */
+    transition: 0.5s;
     
     text-decoration: none;
 }
 
-/* .back-btn{
-    background-color: rgba(255,255,255,.08);
-    border: none;
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    color: white;
-    font-size:1rem;
-    transition: background 0.5s;
+.btn-icon{
+    font-size: clamp(1.5rem, 3vw, 3rem);
 }
 
-.back-btn:hover{
-    background-color:  rgba(255,255,255,.2);
-    box-shadow: inset 5px 5px 16px rgb(0,0,0,.5);
-} */
+.sidebar-label{
+    font-size: clamp(0.6rem, 1vw, 1rem);
+    text-align: center;
+}
