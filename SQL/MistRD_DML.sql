@@ -79,8 +79,8 @@ JOIN Library l ON lg.libraryID = l.libraryID
 JOIN Users u ON l.userID = u.userID
 JOIN Games g ON lg.gameID = g.gameID;
 
-INSERT INTO Library_Games (userID, gameID, playtime, completion)
-VALUES (@userIDInput, @gameIDInput, @playtimeInput, @completionInput);
+INSERT INTO Library_Games (libraryID, gameID, playtime, completion)
+VALUES (@libraryIDInput, @gameIDInput, @playtimeInput, @completionInput);
 
 UPDATE Library_Games
 SET playtime = @playtimeInput,
