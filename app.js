@@ -7,6 +7,7 @@ const db = require('./db-connector');
 const handlebars = require('express-handlebars');
 // const { format } = require('path');
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
 
 app.use(express.static(__dirname));
 
@@ -61,14 +62,27 @@ app.post('/reset', async (req, res)=>{
 app.get('/games', async (req, res) => {
     try {
         // grab games
-        const [rows] = await db.query(`
-            SELECT * FROM Games
+        const [gameInfo] = await db.query(`
+            SELECT g.name as name,
+                gameID,
+                p.name as publisherName,
+                copiesSold,
+                genre,
+                developer,
+                releaseDate,
+                price,
+                estimatedPlaytime
+            FROM Games g
+            INNER JOIN Publishers p ON p.publisherid = g.publisherID
         `);
-        if (!rows.length) {
+        const [publishers] = await db.query(`
+            SELECT name from Publishers
+            `)
+        if (!gameInfo.length) {
             return res.redirect('/');
         }
         // format for site
-        const formatted = rows.map(games => {
+        const formatted = gameInfo.map(games => {
             const date = new Date(games.releaseDate)
             var formattedPlaytime = games.estimatedPlaytime
             if(formattedPlaytime==null){
@@ -85,6 +99,7 @@ app.get('/games', async (req, res) => {
         res.render('games',
             {
                 layout: 'notMain',
+                publisherOptions: publishers,
                 items: formatted,
                 title: 'Games'
             }
@@ -110,6 +125,22 @@ app.post('/games/delete/:id', async (req, res) => {
     }
 });
 
+app.post('/games/modify', async (req,res) => {
+    // console.log(req.headers)
+    // console.log('body: ',req.body)
+    const {
+        id,
+        publisher,
+        genre,
+        developer,
+        release,
+        price,
+        playtime
+    } = req.body;
+    
+    
+    res.redirect('/games')
+})
 // PUBLISHERS PAGE
 app.get('/publishers', async (req, res) => {
     try {
@@ -423,6 +454,8 @@ app.get('/library/:id', async (req,res)=>{
     }
 })
 
+
+// APP GO
 app.listen(PORT, () => {
     console.log(`Express started on http://localhost:${PORT}`);
 });

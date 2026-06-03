@@ -50,14 +50,6 @@ h3 {
     transition: .15s;
 }
 
-.add-box {
-    flex:1;
-    padding: 8px;
-    border:none;
-    border-radius: 8px;
-    font-size: 1rem;
-}
-
 label {
     color: #d2d2d2;
     padding: 10px;
@@ -143,7 +135,6 @@ label {
     gap:5px;
 }
 
-
 .label{
     font-size: .8rem;
     text-transform: uppercase;
@@ -205,7 +196,6 @@ label {
 .item-interact:hover{
     transform: translateY(-2px);
     cursor: pointer;
-    /* box-shadow: 0px 10px 5px rgb(0, 0, 0,.2); */
 }
 
 .hidden{
@@ -226,14 +216,16 @@ label {
 }
 
 .add{
-    background-color: rgba(255,255,255,.08);
+    background: rgba(142, 142, 142, 0.5);
 }
 
-.edit-input{
-    width: 100%;
+.edit-input, .add-box{
+    width: 90%;
     padding: 4px 8px;
     border-radius: 8px;
     border: 1px solid #888;
+    box-sizing: border-box;
+    font:inherit;
 }
 
 .sidebar{
