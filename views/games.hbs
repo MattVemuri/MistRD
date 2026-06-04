@@ -24,10 +24,10 @@
 </div>
 
 <div class="content-list">
-    <div class= "form hidden" id="add_game"> 
+    <div class= "hidden add-form" id="add_game"> 
         <div class="item-header">
             <div class = item-title>Add Game</div>
-            <span class="material-symbols-outlined add">
+            <span class="material-symbols-outlined add" id="confirm-add">
                 add
             </span>
         </div>
@@ -40,7 +40,7 @@
 
             <div class="info-box">
                 <span class="label">Publisher</span>
-                <select class="add-box">
+                <select id="publisher-dropdown" class="add-box">
                     {{#each publisherOptions}}
                         <option value="all">{{this.name}}</option>
                     {{/each}}
@@ -86,3 +86,4 @@
         {{> gameCard}}
     {{/each}}
 </div>
+<script src="/Main/src/games.js"></script>

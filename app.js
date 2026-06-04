@@ -127,20 +127,53 @@ app.post('/games/delete/:id', async (req, res) => {
 
 app.post('/games/modify', async (req,res) => {
     // console.log(req.headers)
-    // console.log('body: ',req.body)
-    const {
-        id,
-        publisher,
-        genre,
-        developer,
-        release,
-        price,
-        playtime
-    } = req.body;
+    console.log('body: ',req.body)
+    // sanitize
+    let formattedPlaytime = req.body.playtime
+    if(formattedPlaytime =='Unknown'){
+        formattedPlaytime = null
+    }
+    let [rows] = await db.query(`SELECT publisherID FROM Publishers WHERE name=?`,req.body.publisher)
+    console.log[rows]
+    let publisherID = rows[0].publisherID
     
+    // query
+    await db.query(`UPDATE Games
+        SET publisherID = ${publisherID}, genre='${req.body.genre}', developer='${req.body.developer}', 
+        releaseDate='${req.body.release}', price=${req.body.price}, estimatedPlaytime=${formattedPlaytime}
+        WHERE gameID = ${req.body.id}`
+    )
     
-    res.redirect('/games')
+    // cosnole
+    res.sendStatus(200)
 })
+
+app.post('/games/add', async (req,res)=>{
+    // console.log('body: ',req.body)
+    try{
+        // sanitize
+        let formattedPlaytime = req.body.playtime
+        if(formattedPlaytime =='Unknown'){
+            formattedPlaytime = null
+        }
+
+        let [rows] = await db.query(`SELECT publisherID FROM Publishers WHERE name=?`,req.body.publisher)
+        // console.log[rows]
+        let publisherID = rows[0].publisherID
+
+        await db.query(`INSERT INTO Games
+            (publisherID, name, genre, developer,releaseDate,price, estimatedPlaytime)
+            VALUES (${publisherID},'${req.body.name}','${req.body.genre}','${req.body.developer}','${req.body.release}',${req.body.price},${formattedPlaytime})`)
+
+        res.sendStatus(200)
+    }catch(error){
+        console.log('An error occured when adding a game')
+        console.error(error)
+        res.send(400)
+    }
+    
+})
+
 // PUBLISHERS PAGE
 app.get('/publishers', async (req, res) => {
     try {

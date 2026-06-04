@@ -1,13 +1,34 @@
-const addBtn = document.querySelector(".add");
-if(addBtn){
-    addBtn.addEventListener("click", (event) => {
+const confirmAdd = document.getElementById('confirm-add')
+if(confirmAdd){
+    confirmAdd.addEventListener('click',()=>{
         event.preventDefault()
         event.stopPropagation()
-        const form = document.querySelector(".form")
-        if(form){
-            form.classList.toggle('hidden')
+        const item = confirmAdd.closest('.add-form')
+        let inputs = fetchInputs(item)
+        // alert(inputs)
+        if(verifyGamesInput(inputs)){
+            fetch('/games/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: inputs[0],
+                    publisher: inputs[1],
+                    genre: inputs[2],
+                    developer: inputs[3],
+                    release: inputs[4],
+                    price: inputs[5],
+                    playtime: inputs[6]
+                })
+            }).then(()=>{
+                window.location.reload()
+            })
+        }else{
+            alert('aaa')
+            window.location.reload()
         }
-    });
+    })
 }
 
 const editBtns = document.querySelectorAll(".edit");
@@ -33,7 +54,7 @@ if(editBtns){
                 // restore link
                 item.href = item.dataset.href
                 // grab inputes
-                inputs = fetchInputs(item)
+                let inputs = fetchInputs(item)
                 if(verifyGamesInput(inputs)){
                     id = item.querySelector('.item-id').textContent.trim()
                     console.log(inputs)
@@ -51,10 +72,12 @@ if(editBtns){
                             price: inputs[4],
                             playtime: inputs[5]
                         })
+                    }).then(()=>{
+                        window.location.reload()
                     })
                 }else{
-                    alert('An input was misconfigured')
-                    fetch('/games')
+                    // alert('An input was misconfigured')
+                    window.location.reload()
                 }
             }
         })
@@ -89,6 +112,14 @@ function editGame(item){
             return
         }
 
+        if(label=='Publisher'){
+            const input = document.getElementById('publisher-dropdown').cloneNode(true)
+            input.classList = 'edit-input'
+            input.removeAttribute('id')
+            field.replaceWith(input)
+            return
+        }
+
         // replace with input field
         const input = document.createElement("input");
         input.type = "text"
@@ -100,10 +131,13 @@ function editGame(item){
 }
 
 function fetchInputs(item){
-    const inputs = item.querySelectorAll('.edit-input');
-    inputsArr =[]
+    const inputs = item.querySelectorAll('.edit-input, .add-box');
+    var inputsArr =[]
     inputs.forEach(field => {
-        const currentText = field.value.trim();
+        let currentText = field.value.trim();
+        if(currentText == 'all'){
+            currentText = field.options[field.selectedIndex].text
+        }
         inputsArr.push(currentText)
     })
     return inputsArr
@@ -111,20 +145,19 @@ function fetchInputs(item){
 
 function verifyGamesInput(inputs){
     // [publisher, genre, dev, release date, price, playtime]
-    // incorrect input passed
-    if(inputs.length != 6){
-        return false
-    }
     // price is negative
     if(inputs[4] < 0){
+        alert('Price may not be negative')
         return false
     }
     if(inputs[5]!=''){
         if(inputs[5]<0){
+            alert('Playtime can only be non-negative, left blank, or as \'Unknown\'')
             return false
         }
     }
     if(inputs[1]=='' || inputs[2]=='' || inputs[3]==''){
+        alert('A field was left empty')
         return false
     }
     return true
