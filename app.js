@@ -7,6 +7,7 @@ const db = require('./db-connector');
 const handlebars = require('express-handlebars');
 // const { format } = require('path');
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
 
 app.use(express.static(__dirname));
 
@@ -61,14 +62,27 @@ app.post('/reset', async (req, res)=>{
 app.get('/games', async (req, res) => {
     try {
         // grab games
-        const [rows] = await db.query(`
-            SELECT * FROM Games
+        const [gameInfo] = await db.query(`
+            SELECT g.name as name,
+                gameID,
+                p.name as publisherName,
+                copiesSold,
+                genre,
+                developer,
+                releaseDate,
+                price,
+                estimatedPlaytime
+            FROM Games g
+            INNER JOIN Publishers p ON p.publisherid = g.publisherID
         `);
-        if (!rows.length) {
+        const [publishers] = await db.query(`
+            SELECT name from Publishers
+            `)
+        if (!gameInfo.length) {
             return res.redirect('/');
         }
         // format for site
-        const formatted = rows.map(games => {
+        const formatted = gameInfo.map(games => {
             const date = new Date(games.releaseDate)
             var formattedPlaytime = games.estimatedPlaytime
             if(formattedPlaytime==null){
@@ -85,6 +99,7 @@ app.get('/games', async (req, res) => {
         res.render('games',
             {
                 layout: 'notMain',
+                publisherOptions: publishers,
                 items: formatted,
                 title: 'Games'
             }
@@ -109,6 +124,55 @@ app.post('/games/delete/:id', async (req, res) => {
         res.status(500).send('An error occurred');
     }
 });
+
+app.post('/games/modify', async (req,res) => {
+    // console.log(req.headers)
+    console.log('body: ',req.body)
+    // sanitize
+    let formattedPlaytime = req.body.playtime
+    if(formattedPlaytime =='Unknown'){
+        formattedPlaytime = null
+    }
+    let [rows] = await db.query(`SELECT publisherID FROM Publishers WHERE name=?`,req.body.publisher)
+    console.log[rows]
+    let publisherID = rows[0].publisherID
+    
+    // query
+    await db.query(`UPDATE Games
+        SET publisherID = ${publisherID}, genre='${req.body.genre}', developer='${req.body.developer}', 
+        releaseDate='${req.body.release}', price=${req.body.price}, estimatedPlaytime=${formattedPlaytime}
+        WHERE gameID = ${req.body.id}`
+    )
+    
+    // cosnole
+    res.sendStatus(200)
+})
+
+app.post('/games/add', async (req,res)=>{
+    // console.log('body: ',req.body)
+    try{
+        // sanitize
+        let formattedPlaytime = req.body.playtime
+        if(formattedPlaytime =='Unknown'){
+            formattedPlaytime = null
+        }
+
+        let [rows] = await db.query(`SELECT publisherID FROM Publishers WHERE name=?`,req.body.publisher)
+        // console.log[rows]
+        let publisherID = rows[0].publisherID
+
+        await db.query(`INSERT INTO Games
+            (publisherID, name, genre, developer,releaseDate,price, estimatedPlaytime)
+            VALUES (${publisherID},'${req.body.name}','${req.body.genre}','${req.body.developer}','${req.body.release}',${req.body.price},${formattedPlaytime})`)
+
+        res.sendStatus(200)
+    }catch(error){
+        console.log('An error occured when adding a game')
+        console.error(error)
+        res.send(400)
+    }
+    
+})
 
 // PUBLISHERS PAGE
 app.get('/publishers', async (req, res) => {
@@ -423,6 +487,8 @@ app.get('/library/:id', async (req,res)=>{
     }
 })
 
+
+// APP GO
 app.listen(PORT, () => {
     console.log(`Express started on http://localhost:${PORT}`);
 });

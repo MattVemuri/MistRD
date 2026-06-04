@@ -24,22 +24,32 @@
 </div>
 
 <div class="content-list">
-    <div class= "form hidden"> 
+    <div class= "hidden add-form" id="add_game"> 
         <div class="item-header">
             <div class = item-title>Add Game</div>
+            <span class="material-symbols-outlined add" id="confirm-add">
+                add
+            </span>
         </div>
-        <form action = "./games.html"> 
-            <label>Game:</label><br>
-                <input type = "text" name = "publisher" class = "add-box"><br>
-            <label>Publisher:</label><br>
-                <select class="filter-dropdown">
-                    <option value="all">Valve</option>
-                    <option value="all">Konami</option>
-                    <option value="all">CAPCOM</option>
-                    <option value="all">Team Cherry</option>
-                </select><br>
-            <label>Genre:</label><br>
-                <select class="filter-dropdown">
+
+        <div  class="item-details">
+            <div class="info-box">
+                <span class="label">Title</span>
+                <input type = "text" name = "publisher" class = "add-box">
+            </div>
+
+            <div class="info-box">
+                <span class="label">Publisher</span>
+                <select id="publisher-dropdown" class="add-box">
+                    {{#each publisherOptions}}
+                        <option value="all">{{this.name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            
+            <div class="info-box">
+                <span class="label">Genre</span>
+                <select class="add-box">
                     <option value="all">FPS</option>
                     <option value="all">Stealth</option>
                     <option value="all">Action-Advencture</option>
@@ -47,22 +57,33 @@
                     <option value="all">Rougelike</option>
                     <option value="all">Simulation</option>
                     <option value="all">Role-Playing</option>
-                </select><br>
-                <!--<input type = "text" name = "genre" class = "add-box">-->
-            <label>Developer:</label><br>
+                </select>
+            </div>
+
+            <div class="info-box">
+                <span class="label">Developer</span>
                 <input type = "text" name = "developer" class = "add-box"><br>
-            <label>Release Date:</label><br>
+            </div>
+
+            <div class="info-box">
+                <span class="label">Release Date</span>
                 <input type = "date" name = "releasedate" class = "add-box"><br>
-            <label>Price:</label><br>
+            </div>
+
+            <div class="info-box">
+                <span class="label">Price</span>
                 <input type = "number" name = "price" class = "add-box" step="0.01" min="0" placeholder="0.00"><br>
-            <label>Estimated Playtime:</label><br>
+            </div>
+
+            <div class="info-box">
+                <span class="label">Estimated Playtime</span>
                 <input type = "number" name = "estimatedplaytime" class = "add-box" min="0"><br>
-            <br>
-            <input type = "submit" value = "Submit" class="button">
-        </form>
+            </div>
+        </div>
     </div>
 
     {{#each items}}
         {{> gameCard}}
     {{/each}}
 </div>
+<script src="/Main/src/games.js"></script>
