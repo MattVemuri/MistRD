@@ -6,21 +6,22 @@ if(confirmAdd){
         const item = confirmAdd.closest('.add-form')
         let inputs = fetchInputs(item)
         // alert(inputs)
-        if(verifyPublisherInput(inputs)){
-            fetch('/publishers/add', {
+        if(verifyLGHeader(inputs.slice(0,2)) && verifyLGInput(inputs.slice(2,4))){
+            fetch('/libraryGames/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    name: inputs[0],
-                    webpage: inputs[1],
-                    email: inputs[2],
+                    game: inputs[0],
+                    username: inputs[1],
+                    playtime:inputs[2],
+                    completion: inputs[3]
                 })
             }).then(()=>{
                 window.location.reload()
             })
-        }else{
+        }else{   
             window.location.reload()
         }
     })
@@ -37,37 +38,33 @@ if(editBtns){
             // select parent item
             const item = editBtn.closest('.item')
             item.classList.toggle('editing')
-            
             if(item.classList.contains('editing')){
                 // stop from being link
                 item.dataset.href = item.href;
                 item.removeAttribute('href')
-
                 // convert to editable fields
-                editPublisher(item)
+                editLG(item)
             }else{
                 // restore link
                 item.href = item.dataset.href
                 // grab inputes
                 let inputs = fetchInputs(item)
-                if(verifyPublisherInput(inputs)){
+                if(verifyLGInput(inputs)){
                     let id = item.querySelector('.item-id').textContent.trim()
-                    fetch('/publishers/modify', {
+                    fetch('/libraryGames/modify', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
                             id,
-                            name: inputs[0],
-                            webpage: inputs[1],
-                            email: inputs[2],
+                            playtime:inputs[0],
+                            completion: inputs[1]
                         })
                     }).then(()=>{
                         window.location.reload()
                     })
                 }else{
-                    // alert('An input was misconfigured')
                     window.location.reload()
                 }
             }
@@ -75,26 +72,26 @@ if(editBtns){
     })
 }
 
-function editPublisher(item){
+function editLG(item){
+
     const fields = item.querySelectorAll('.label-content');
-        fields.forEach(field => {
-            const label = field.closest('.info-box').querySelector('.label').textContent.trim()
-            let currentText = field.textContent.trim();
-            const input = document.createElement("input");
-            input.type = "text"
-            input.value = currentText
-            input.classList.add("edit-input")
+    fields.forEach(field => {
+        const label = field.closest('.info-box').querySelector('.label').textContent.trim()
+        let currentText = field.textContent.trim();    
+
+        // strip completion of %
+        if(label=='Completion'){
+            currentText = currentText.replaceAll('%','')
+        }
     
-            field.replaceWith(input)
-        })
-    // replace title
-    const title = item.querySelector('.item-title');
-    let currentText = title.textContent.trim();
-    const input = document.createElement("input");
-    input.type = "text"
-    input.value = currentText
-    input.classList.add("edit-input")
-    title.replaceWith(input)
+        // replace with input field
+        const input = document.createElement("input");
+        input.type = "text"
+        input.value = currentText
+        input.classList.add("edit-input")
+
+        field.replaceWith(input)
+    })
 }
 
 function fetchInputs(item){
@@ -102,24 +99,36 @@ function fetchInputs(item){
     var inputsArr =[]
     inputs.forEach(field => {
         let currentText = field.value.trim();
+        if(currentText == 'all'){
+            currentText = field.options[field.selectedIndex].text
+        }
         inputsArr.push(currentText)
     })
     return inputsArr
 }
 
-function verifyPublisherInput(inputs){
-    // [publisher, webpage, email]
-    if(inputs[0]==''){
-        alert('Publisher name may not be left empty')
+function verifyLGInput(inputs){
+    // [Username]
+    if(inputs[0]<0){
+        alert('Playtime may not be negative')
         return false;
     }
-    else if(inputs[1]==''){
-        alert('Webpage may not be left empty')
+    if(inputs[1]<0 || inputs[1]>100){
+        alert('Completion must be a value 0-100')
         return false;
-    }
-    else if(inputs[2]==''){
-        alert('Email may not be left empty')
-        return false
     }
     return true
+}
+
+function verifyLGHeader(inputs){
+    if(inputs[0]==''){
+        alert('Game may not be empty')
+        return false;
+    }
+    if(inputs[1]==''){
+        alert('Username may not be empty')
+        return false;
+    }
+    
+    return true;
 }

@@ -9,3 +9,20 @@ if(addBtn){
         }
     });
 }
+
+const deleteBtns = document.querySelectorAll(".delete");
+if(deleteBtns){
+    deleteBtns.forEach(deleteBtn=>{
+        deleteBtn.type = 'button'
+        deleteBtn.addEventListener('click',(event)=>{
+            // const item = deleteBtn.closest('.item')
+            // item.removeAttribute('href')
+            
+            event.preventDefault()
+            event.stopPropagation()
+            // event.stopImmediatePropagation();
+            // alert('aaa')
+            deleteBtn.closest('form').requestSubmit()
+        })
+    })
+}

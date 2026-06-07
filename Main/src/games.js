@@ -24,9 +24,6 @@ if(confirmAdd){
             }).then(()=>{
                 window.location.reload()
             })
-        }else{
-            alert('aaa')
-            window.location.reload()
         }
     })
 }
@@ -56,8 +53,8 @@ if(editBtns){
                 // grab inputes
                 let inputs = fetchInputs(item)
                 if(verifyGamesInput(inputs)){
-                    id = item.querySelector('.item-id').textContent.trim()
-                    console.log(inputs)
+                    let id = item.querySelector('.item-id').textContent.trim()
+                    // console.log(inputs)
                     fetch('/games/modify', {
                         method: 'POST',
                         headers: {
@@ -65,11 +62,12 @@ if(editBtns){
                         },
                         body: JSON.stringify({
                             id,
-                            publisher: inputs[0],
-                            genre: inputs[1],
-                            developer: inputs[2],
-                            release: inputs[3],
-                            price: inputs[4],
+                            name: inputs[0],
+                            publisher: inputs[1],
+                            genre: inputs[2],
+                            developer: inputs[3],
+                            release: inputs[4],
+                            price: inputs[5],
                             playtime: inputs[5]
                         })
                     }).then(()=>{
@@ -94,7 +92,7 @@ function editGame(item){
             return;
         }
 
-        currentText = field.textContent.trim();
+        let currentText = field.textContent.trim();
         // strip price of $
         if(label=='Price'){
             currentText = currentText.replaceAll('$','')
@@ -128,6 +126,15 @@ function editGame(item){
 
         field.replaceWith(input)
     })
+    // replace title
+    const title = item.querySelector('.item-title');
+    let currentText = title.textContent.trim();
+    const input = document.createElement("input");
+    input.type = "text"
+    input.value = currentText
+    input.classList.add("edit-input")
+    title.replaceWith(input)
+
 }
 
 function fetchInputs(item){
@@ -144,21 +151,38 @@ function fetchInputs(item){
 }
 
 function verifyGamesInput(inputs){
-    // [publisher, genre, dev, release date, price, playtime]
-    // price is negative
-    if(inputs[4] < 0){
+    // alert(inputs)
+    // [name, publisher, genre, dev, release date, price, playtime]
+    if(inputs[0]==''){
+        alert('Name may not be left empty')
+        return false;
+    }
+    if(inputs[1]==''){
+        alert('Publisher may not be left empty')
+        return false;
+    }
+    if(inputs[2]==''){
+        alert('Genre may not be left empty')
+        return false;
+    }
+    if(inputs[3]==''){
+        alert('Developer may not be left empty')
+        return false
+    }
+    if(inputs[4]==''){
+        alert('Release date may not be left empty')
+        return false
+    }
+     // price is negative
+    if(inputs[5] < 0){
         alert('Price may not be negative')
         return false
     }
-    if(inputs[5]!=''){
+    if(inputs[6]!=''){
         if(inputs[5]<0){
             alert('Playtime can only be non-negative, left blank, or as \'Unknown\'')
             return false
         }
-    }
-    if(inputs[1]=='' || inputs[2]=='' || inputs[3]==''){
-        alert('A field was left empty')
-        return false
     }
     return true
 }

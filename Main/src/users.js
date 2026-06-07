@@ -6,21 +6,20 @@ if(confirmAdd){
         const item = confirmAdd.closest('.add-form')
         let inputs = fetchInputs(item)
         // alert(inputs)
-        if(verifyPublisherInput(inputs)){
-            fetch('/publishers/add', {
+        if(verifyUserInput(inputs)){
+            fetch('/users/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    name: inputs[0],
-                    webpage: inputs[1],
-                    email: inputs[2],
+                    username: inputs[0],
                 })
             }).then(()=>{
                 window.location.reload()
             })
         }else{
+            
             window.location.reload()
         }
     })
@@ -44,24 +43,22 @@ if(editBtns){
                 item.removeAttribute('href')
 
                 // convert to editable fields
-                editPublisher(item)
+                editUser(item)
             }else{
                 // restore link
                 item.href = item.dataset.href
                 // grab inputes
                 let inputs = fetchInputs(item)
-                if(verifyPublisherInput(inputs)){
+                if(verifyUserInput(inputs)){
                     let id = item.querySelector('.item-id').textContent.trim()
-                    fetch('/publishers/modify', {
+                    fetch('/users/modify', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
                             id,
-                            name: inputs[0],
-                            webpage: inputs[1],
-                            email: inputs[2],
+                            username: inputs[0],
                         })
                     }).then(()=>{
                         window.location.reload()
@@ -75,18 +72,7 @@ if(editBtns){
     })
 }
 
-function editPublisher(item){
-    const fields = item.querySelectorAll('.label-content');
-        fields.forEach(field => {
-            const label = field.closest('.info-box').querySelector('.label').textContent.trim()
-            let currentText = field.textContent.trim();
-            const input = document.createElement("input");
-            input.type = "text"
-            input.value = currentText
-            input.classList.add("edit-input")
-    
-            field.replaceWith(input)
-        })
+function editUser(item){
     // replace title
     const title = item.querySelector('.item-title');
     let currentText = title.textContent.trim();
@@ -107,19 +93,11 @@ function fetchInputs(item){
     return inputsArr
 }
 
-function verifyPublisherInput(inputs){
-    // [publisher, webpage, email]
+function verifyUserInput(inputs){
+    // [Username]
     if(inputs[0]==''){
-        alert('Publisher name may not be left empty')
+        alert('Username may not be left empty')
         return false;
-    }
-    else if(inputs[1]==''){
-        alert('Webpage may not be left empty')
-        return false;
-    }
-    else if(inputs[2]==''){
-        alert('Email may not be left empty')
-        return false
     }
     return true
 }

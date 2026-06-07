@@ -198,6 +198,11 @@ label {
     cursor: pointer;
 }
 
+.editing:hover{
+    transform: none;
+    cursor:default;
+}
+
 .hidden{
     display:none;
 }
