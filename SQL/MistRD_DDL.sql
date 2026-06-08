@@ -1,3 +1,6 @@
+-- All hand-authored
+
+-- Dropping any tables first 
 DROP PROCEDURE IF EXISTS load_db;
 DELIMITER //
 CREATE PROCEDURE load_db()
@@ -5,6 +8,7 @@ BEGIN
     SET FOREIGN_KEY_CHECKS = 0;
     SET AUTOCOMMIT =0;
 
+    -- Dropping the tables if already existed before
     DROP TABLE IF EXISTS Library_Games;
     DROP TABLE IF EXISTS Library;
     DROP TABLE IF EXISTS Games;
@@ -68,6 +72,7 @@ BEGIN
     (3, "Capcom", "https://www.capcomusa.com/", "info-capcom@gmail.com"),
     (4, "Team Cherry", "https://www.teamcherry.com.au/", "team@cherry.com");
 
+    -- Inserting the Games Example Data Values
     INSERT INTO Games (gameID, name, PublisherID, copiesSold, genre, developer, releaseDate, price, estimatedPlaytime) VALUES
     (1, "Counter-Strike 2",                 (SELECT publisherID from Publishers WHERE name = "Valve"), 0, "FPS",               "Valve", '2012-04-30', 0.00, NULL),
     (2, "METAL GEAR SOLID Δ: SNAKE EATER",  (SELECT publisherID from Publishers WHERE name = "KONAMI"), 0, "Stealth",           "KONAMI", '2025-08-27', 69.99, 12),
@@ -81,11 +86,13 @@ BEGIN
     (2, "Sophia",0,0),
     (3, "xXX_Gamer_XXx",0,0);
 
+    -- Inserting into Library the individual users from the Sample Data
     INSERT INTO Library (libraryID, userID) VALUES
     (1, (SELECT userID from Users WHERE username = "Matthew")),
     (2, (SELECT userID from Users WHERE username = "Sophia")),
     (3, (SELECT userID from Users WHERE username = "xXX_Gamer_XXx"));
 
+    -- Inserting all of the games owned by the individual users
     INSERT INTO Library_Games (gameID, libraryID, playtime, completion) VALUES
     ((SELECT gameID from Games WHERE name = "Counter-Strike 2"), 
     1, 80, 100),
