@@ -137,7 +137,7 @@ app.post('/games/delete/:id', async (req, res) => {
         // grab id to delete
         const gameID = req.params.id
         // delete from db
-        await db.query(`DELETE FROM Games WHERE gameID = ?;`,[gameID]);
+        await db.query(`CALL delete_game(${gameID})`)
         // notify on server end
         console.log(`Removed game with ID: ${gameID}`);
         // send back
@@ -163,11 +163,8 @@ app.post('/games/modify', async (req,res) => {
         let publisherID = rows[0].publisherID
         
         // update game in db
-        await db.query(`UPDATE Games
-            SET name='${req.body.name}',publisherID = ${publisherID}, genre='${req.body.genre}', developer='${req.body.developer}', 
-            releaseDate='${req.body.release}', price=${req.body.price}, estimatedPlaytime=${formattedPlaytime}
-            WHERE gameID = ${req.body.id}`
-        )
+        await db.query(`CALL update_game(${req.body.id}, ${publisherID}, '${req.body.name}','${req.body.genre}',
+            '${req.body.developer}', '${req.body.release}', ${req.body.price}, ${formattedPlaytime})`)
         // refresh page
         res.sendStatus(200)
     }catch(error){
@@ -191,9 +188,7 @@ app.post('/games/add', async (req,res)=>{
         let [rows] = await db.query(`SELECT publisherID FROM Publishers WHERE name=?`,req.body.publisher)
         let publisherID = rows[0].publisherID
         // add new game to db
-        await db.query(`INSERT INTO Games
-            (publisherID, name, genre, developer,releaseDate,price, estimatedPlaytime)
-            VALUES (${publisherID},'${req.body.name}','${req.body.genre}','${req.body.developer}','${req.body.release}',${req.body.price},${formattedPlaytime})`)
+        await db.query(`CALL add_game(${publisherID},'${req.body.name}','${req.body.genre}','${req.body.developer}','${req.body.release}',${req.body.price},${formattedPlaytime})`)
         // refresh
         res.sendStatus(200)
     }catch(error){
@@ -238,7 +233,7 @@ app.post('/publishers/delete/:id', async (req, res) => {
         // grab id
         const publisherID = req.params.id
         // delete publisher with id from db
-        await db.query(`DELETE FROM Publishers WHERE publisherID = ?;`,[publisherID]);
+        await db.query(`CALL delete_publisher(${publisherID})`)
         // log to server
         console.log(`Removed publisher with ID: ${publisherID}`);
         // send back to publisher's page
@@ -323,9 +318,7 @@ app.post('/publishers/modify', async(req,res)=>{
     console.log('body: ', req.body)
     try{
         // update publisher in db
-        await db.query(`UPDATE Publishers
-            SET name = '${req.body.name}',webPage='${req.body.webpage}', email='${req.body.email}'
-            WHERE publisherID=?`,req.body.id)
+        await db.query(`CALL update_publisher(${req.body.id},'${req.body.name}', '${req.body.webpage}', '${req.body.email}')`)
         // refresh page
         res.sendStatus(200)
     }catch(error){
@@ -342,9 +335,7 @@ app.post('/publishers/add', async (req,res)=>{
     console.log('body: ', req.body)
     try{
         // insert new publisher into db
-        await db.query(`INSERT INTO Publishers
-            (name, webPage, email)
-            VALUES ('${req.body.name}', '${req.body.webpage}','${req.body.email}')`)
+        await db.query(`CALL add_publisher('${req.body.name}', '${req.body.webpage}', '${req.body.email}')`)
         // refresh page
         res.sendStatus(200)
     }catch(error){
@@ -386,7 +377,7 @@ app.post('/users/delete/:id', async (req, res) => {
     const userID = req.params.id
     try {
         // delete from db
-        await db.query(`DELETE FROM Users WHERE userID = ?;`,[userID]);
+        await db.query(`CALL delete_user(${userID})`)
         // log to server
         console.log(`Removed user with ID: ${userID}`);
         // refresh page
@@ -403,10 +394,7 @@ app.post('/users/modify', async (req,res)=>{
     console.log('body: ',req.body)
     try{
         // update user in db
-        await db.query(`UPDATE Users
-            SET username='${req.body.username}'
-            WHERE userID = ${req.body.id}`
-        )
+        await db.query(`CALL update_user(${req.body.id}, '${req.body.username}')`)
         // refresh page
         res.sendStatus(200)
     }catch(error){
@@ -422,9 +410,7 @@ app.post('/users/add', async (req,res)=>{
     console.log('body:', req.body)
     try{
         // insert new user into db
-        await db.query(`INSERT INTO Users
-                (username)
-                VALUES ('${req.body.username}')`)
+        await db.query(`CALL add_user('${req.body.username}')`)
         // refresh page
         res.send(200)
     }catch(error){
@@ -500,10 +486,7 @@ app.post('/libraryGames/add', async (req, res)=>{
         // get user's library
         const [library] = await db.query(`SELECT libraryID FROM Library WHERE  userID=?`,user[0].userID)
         // insert new library game into db
-        await db.query(`INSERT INTO Library_Games
-        (gameID, libraryID, playtime, completion)
-        VALUES (${game[0].gameID}, ${library[0].libraryID},
-                 ${req.body.playtime}, ${req.body.completion})`)
+        await db.query(`CALL add_library_game(${game[0].gameID},${user[0].userID},${req.body.playtime},${req.body.completion})`)
         // refresh page
         res.send(200)
     }catch(error){
@@ -519,9 +502,7 @@ app.post('/libraryGames/modify', async(req,res)=>{
     console.log('Body: ', req.body)
     try{
         // update library game in db
-        await db.query(`UPDATE Library_Games
-            SET playtime=${req.body.playtime}, completion=${req.body.completion}
-            WHERE lgID=?`,req.body.id)
+        await db.query(`CALL update_library_game(${req.body.id},${req.body.playtime},${req.body.completion})`)
         // refresh page
         res.sendStatus(200)
     }catch(error){
@@ -588,7 +569,7 @@ app.post('/libraryGames/delete/:id', async (req, res) => {
     const lgID = req.params.id
     try {
         // delete library game with matching id fromdb
-        await db.query(`DELETE FROM Library_Games WHERE lgID = ?;`,[lgID]);
+        await db.query(`CALL delete_library_game(${lgID})`)
         // log to server
         console.log(`Removed library_game with ID: ${lgID}`);
         // refresh sending page
