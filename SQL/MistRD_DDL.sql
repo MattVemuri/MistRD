@@ -52,8 +52,9 @@ BEGIN
         FOREIGN KEY (libraryID) REFERENCES Library(libraryID) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
-    -- TRUNCATE usage sourced from learn.Microsoft.com
+    -- TRUNCATE usage base on learn.Microsoft.com
     -- https://learn.microsoft.com/en-us/sql/t-sql/statements/drop-table-transact-sql?view=sql-server-ver17
+    -- 6/5/26
     -- TRUNCATE used in place of DROP to preserve triggers
 
     TRUNCATE Library_Games;

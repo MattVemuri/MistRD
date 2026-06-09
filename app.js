@@ -64,6 +64,8 @@ app.post('/reset', async (req, res)=>{
 
         // req.get('Referer) sourced from GeeksForGeeks.org
         // https://www.geeksforgeeks.org/web-tech/express-js-req-get-function/
+        // 6/5/26
+        // Used to redirect back to previous page
         res.redirect(req.get('Referer'));
     } catch (error) {
         // on error, log and throw 500
@@ -271,8 +273,9 @@ app.get('/publishers/:id', async (req, res)=>{
         if (!libraryGames.length) {
            libraryGames=[null]
         }else{
-            // Map function sourced from MDN docs
+            // Map function adapted from MDN docs
             // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map 
+            // 6/5/26
             // if there are games, format for display
             var formatted = libraryGames.map(games => {
                 // convert date to Date object

@@ -124,7 +124,8 @@ function editGame(item){
             // split by - from MM-DD-YYYY input
             date = currentText.split('-')
             // set current value to current date
-            // padStart sourced from stack overflow
+            // padStart copied from stack overflow
+            // 6/5/26
             // https://stackoverflow.com/questions/61830788/setting-date-in-html-date-input-using-javascript
             input.value = `${date[2]}-${date[0].padStart(2,'0')}-${date[1].padStart(2,'0')}`
             // replace field with input
