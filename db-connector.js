@@ -1,3 +1,5 @@
+// based on cs340 starter code
+
 // Get an instance of mysql we can use in the app
 let mysql = require('mysql2')
 

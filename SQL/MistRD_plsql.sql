@@ -1,3 +1,7 @@
+-- All code hand authored except for those labeled otherwise
+
+-- demo delete function (obsolete)
+
 DROP PROCEDURE IF EXISTS remove_csgo;
 DELIMITER //
 CREATE PROCEDURE remove_csgo()
@@ -7,6 +11,9 @@ END //
 
 -- NEW and OLD Keywords sourced from GeeksForGeeks.org
 -- https://www.geeksforgeeks.org/dbms/sql-triggers/
+-- used to reference versions of libraryGames in triggers
+
+-- These 3 functions update the counts for user playtime and owned games
 
 DROP TRIGGER IF EXISTS trigger_after_library_game_delete //
 
@@ -48,6 +55,8 @@ BEGIN
     SET totalPlaytime= totalPlaytime - OLD.playtime + NEW.playtime
     WHERE Users.userID = OLD.libraryID;
 END //
+
+-- auto instances a library linked with a user
 
 DROP TRIGGER IF EXISTS trigger_after_user_created //
 

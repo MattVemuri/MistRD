@@ -1,0 +1,27 @@
+ <a class="item item-interact" href="/libraryGames/{{this.gameID}}">
+        
+    <div class="item-header">
+        <div class = item-title>{{this.gameName}}</div>
+        <div class = "item-actions">
+            <div class="item-id">{{this.lgID}}</div>
+            <form method="POST" action="/libraryGames/delete/{{this.lgID}}">
+                <button type="submit" class="material-symbols-outlined delete">
+                    delete
+                </button>
+            </form>
+            <span class="material-symbols-outlined edit">edit</span>
+        </div>
+    </div>
+
+    <div class = "item-details">
+        <div class = "info-box">
+            <span class = label>Playtime</span>
+            <span class = label-content>{{this.playtime}}</span>
+        </div>                
+        <div class = "info-box">
+            <span class = label>Completion</span>
+            <span class = label-content>{{this.completion}}%</span>
+        </div>                
+    </div>
+
+</a>

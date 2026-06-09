@@ -1,3 +1,5 @@
+-- CREATE PROCEDURE TO CREATE/RESET the MistRD database
+-- All code hand authored except for those labeled otherwise
 DROP PROCEDURE IF EXISTS load_db;
 DELIMITER //
 CREATE PROCEDURE load_db()
@@ -75,7 +77,7 @@ BEGIN
     (4, "PRAGMATA",                         (SELECT publisherID from Publishers WHERE name = "Capcom"), 0, "Action-Adventure",  "CAPCOM Co., Ltd.", '2026-04-16', 59.99, 10),
     (5, "Hollow Knight: Silksong",          (SELECT publisherID from Publishers WHERE name = "Team Cherry"), 0, "Metroidvania",      "Team Cherry", '2025-09-03', 19.99, 41);
 
-    -- Moved Users before Library from Review
+    
     INSERT INTO Users (userID, username, ownedGames, totalPlaytime) VALUES
     (1,'Matthew',0,0),
     (2, "Sophia",0,0),
