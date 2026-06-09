@@ -9,8 +9,9 @@ BEGIN
     DELETE FROM Games WHERE Games.gameID = 1;
 END //
 
--- NEW and OLD Keywords sourced from GeeksForGeeks.org
+-- NEW and OLD Keywords based on GeeksForGeeks.org
 -- https://www.geeksforgeeks.org/dbms/sql-triggers/
+-- 6/5/26
 -- used to reference versions of libraryGames in triggers
 
 -- These 3 functions update the counts for user playtime and owned games

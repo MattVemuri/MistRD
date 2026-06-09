@@ -9,26 +9,31 @@ Sourced work is shown via inline comments like so:
 
 Sourced Material:
     app.js
-    req.get('Referer) sourced from GeeksForGeeks.org
+    req.get('Referer) copied from GeeksForGeeks.org
     https://www.geeksforgeeks.org/web-tech/express-js-req-get-function/
+    6/5/26
     res.redirect(req.get('Referer'));
 
-    Map function sourced from MDN docs
+    Map function adapted from MDN docs
     https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map 
+    6/5/26
     var formatted = libraryGames.map(games=>{...})
 
     games.js
-    padStart sourced from stack overflow
+    padStart copied from stack overflow
     https://stackoverflow.com/questions/61830788/setting-date-in-html-date-input-using-javascript
+    6/5/26
     input.value = `${date[2]}-${date[0].padStart(2,'0')}-${date[1].padStart(2,'0')}`
 
     MistRD_DDL.sql
-    TRUNCATE usage sourced from learn.Microsoft.com
+    TRUNCATE usage based on learn.Microsoft.com
     https://learn.microsoft.com/en-us/sql/t-sql/statements/drop-table-transact-sql?view=sql-server-ver17
+    6/4/26
     TRUNCATE used in place of DROP to preserve triggers
 
     MistRD_plsql.sql
-    NEW and OLD Keywords sourced from GeeksForGeeks.org
+    NEW and OLD Keywords based on GeeksForGeeks.org
+    6/4/26
     https://www.geeksforgeeks.org/dbms/sql-triggers/
     used to reference versions of libraryGames in triggers
 
