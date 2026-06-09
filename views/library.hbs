@@ -9,15 +9,60 @@
         <option value="all">ID</option>
         <option value="all">A-Z</option>
         <option value="all">Playtime</option>
-        <option value="all">Completion</option>
+        {{#if individual}}
+            <option value="all">Completion</option>
+        {{/if}}
     </select>
+    {{#if individual}}
+        <span class="material-symbols-outlined add">add</span>
+    {{/if}}
     <!-- <span class="material-symbols-outlined add">add</span> -->
 </div>
 
 <div class="content-list">
+
     {{#if individual}}
+        <div class= "add-form hidden"> 
+            <div class="item-header">
+                <div class = item-title>Add Library Game</div>
+                <span class="material-symbols-outlined add" id="confirm-add">
+                    add
+                </span>
+            </div>
+            <div class="item-details"> 
+                
+                <div class="info-box">
+                    <span class="label">Game</span>
+                    <select id="publisher-dropdown" class="add-box">
+                        {{#each gameOptions}}
+                            <option value="all">{{this.name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                
+                <div class="info-box">
+                    <span class="label">User</span>
+                    <select id="publisher-dropdown" class="add-box">
+                        {{#each userOptions}}
+                            <option value="all">{{this.username}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                
+                <div class="info-box">
+                    <span class="label">Playtime</span>
+                    <input type = "number" name = "playtime" class = "add-box" step="1" min="0" value="0">
+                </div>
+
+                <div class="info-box">
+                    <span class="label">Completion</span>
+                    <input type = "number" name = "completion" class = "add-box" step="1" min="0" max="100" value="0">
+                </div>
+
+            </div>
+        </div>
         {{#each items}}
-            {{> libraryGameCard}}
+            {{> singleLibraryCard}}
         {{/each}}
     {{else}}
         {{#each items}}
@@ -25,3 +70,4 @@
         {{/each}}
     {{/if}}
 </div>
+<script src="/Main/src/libraryGames.js"></script>

@@ -1,3 +1,5 @@
+-- CREATE PROCEDURE TO CREATE/RESET the MistRD database
+-- All code hand authored except for those labeled otherwise
 DROP PROCEDURE IF EXISTS load_db;
 DELIMITER //
 CREATE PROCEDURE load_db()
@@ -5,23 +7,16 @@ BEGIN
     SET FOREIGN_KEY_CHECKS = 0;
     SET AUTOCOMMIT =0;
 
-    DROP TABLE IF EXISTS Library_Games;
-    DROP TABLE IF EXISTS Library;
-    DROP TABLE IF EXISTS Games;
-    DROP TABLE IF EXISTS Publishers;
-    DROP TABLE IF EXISTS Users;
-
-
     -- Creating the Tables
 
-    CREATE TABLE Publishers (
+    CREATE TABLE IF NOT EXISTS Publishers (
         publisherID int AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         webPage VARCHAR(255) NULL,
         email VARCHAR(255) NOT NULL
     );
 
-    CREATE TABLE Games (
+    CREATE TABLE IF NOT EXISTS Games (
         gameID int AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         publisherID int NOT NULL,
@@ -34,20 +29,20 @@ BEGIN
         FOREIGN KEY (publisherID) REFERENCES Publishers(publisherID) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
-    CREATE TABLE Users (
+    CREATE TABLE IF NOT EXISTS Users (
         userID int AUTO_INCREMENT NOT NULL PRIMARY KEY,
         username VARCHAR(255) NOT NULL,
         ownedGames int NOT NULL DEFAULT 0,
         totalPlaytime int NOT NULL DEFAULT 0
     );
 
-    CREATE TABLE Library (
+    CREATE TABLE IF NOT EXISTS Library (
         libraryID int AUTO_INCREMENT PRIMARY KEY,
         userID int UNIQUE NOT NULL,
         FOREIGN KEY (userID) REFERENCES Users(userID) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
-    CREATE TABLE Library_Games (
+    CREATE TABLE IF NOT EXISTS Library_Games (
         lgID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
         gameID int NOT NULL,                            
         libraryID int NOT NULL,                         
@@ -57,8 +52,15 @@ BEGIN
         FOREIGN KEY (libraryID) REFERENCES Library(libraryID) ON DELETE CASCADE ON UPDATE CASCADE
     );
 
+    -- TRUNCATE usage sourced from learn.Microsoft.com
+    -- https://learn.microsoft.com/en-us/sql/t-sql/statements/drop-table-transact-sql?view=sql-server-ver17
+    -- TRUNCATE used in place of DROP to preserve triggers
 
-
+    TRUNCATE Library_Games;
+    TRUNCATE Library;
+    TRUNCATE Games;
+    TRUNCATE Publishers;
+    TRUNCATE Users;
 
     -- Inserting the Example Data Values
 
@@ -75,70 +77,29 @@ BEGIN
     (4, "PRAGMATA",                         (SELECT publisherID from Publishers WHERE name = "Capcom"), 0, "Action-Adventure",  "CAPCOM Co., Ltd.", '2026-04-16', 59.99, 10),
     (5, "Hollow Knight: Silksong",          (SELECT publisherID from Publishers WHERE name = "Team Cherry"), 0, "Metroidvania",      "Team Cherry", '2025-09-03', 19.99, 41);
 
-    -- Moved Users before Library from Review
+    
     INSERT INTO Users (userID, username, ownedGames, totalPlaytime) VALUES
     (1,'Matthew',0,0),
     (2, "Sophia",0,0),
     (3, "xXX_Gamer_XXx",0,0);
 
-    INSERT INTO Library (libraryID, userID) VALUES
-    (1, (SELECT userID from Users WHERE username = "Matthew")),
-    (2, (SELECT userID from Users WHERE username = "Sophia")),
-    (3, (SELECT userID from Users WHERE username = "xXX_Gamer_XXx"));
-
+    -- Using subqueries breaks triggers as the table is already in use
     INSERT INTO Library_Games (gameID, libraryID, playtime, completion) VALUES
-    ((SELECT gameID from Games WHERE name = "Counter-Strike 2"), 
-    1, 80, 100),
-    ((SELECT gameID from Games WHERE name = "Counter-Strike 2"), 
-    3, 680, 100),
-    ((SELECT gameID from Games WHERE name = "METAL GEAR SOLID Δ: SNAKE EATER"), 
-    2, 18, 39),
-    ((SELECT gameID from Games WHERE name = "METAL GEAR SOLID Δ: SNAKE EATER"), 
-    3, 50, 100),
-    ((SELECT gameID from Games WHERE name = "Half-Life 2"), 
-    1, 8, 15),
-    ((SELECT gameID from Games WHERE name = "Half-Life 2"), 
-    2, 20, 27),
-    ((SELECT gameID from Games WHERE name = "Half-Life 2"), 
-    3, 24, 89),
-    ((SELECT gameID from Games WHERE name = "PRAGMATA"), 
-    2, 73, 73),
-    ((SELECT gameID from Games WHERE name = "Hollow Knight: Silksong"), 
-    3, 15, 67);
+    (1, 1, 80, 100),
+    (1, 3, 680, 100),
+    (2, 2, 18, 39),
+    (2, 3, 50, 100),
+    (3, 1, 8, 15),
+    (3, 2, 20, 27),
+    (3, 3, 24, 89),
+    (4, 2, 73, 73),
+    (5, 3, 15, 67);
 
-    -- Updating copiesSold with matching library and games id
-    UPDATE Games
-    SET copiesSold = (
-        SELECT COUNT(*)
-        FROM Library_Games
-        WHERE Library_Games.gameID = Games.gameID
-    );
+    -- creation of libraries, playtime, owned games, and sold copies are handled via triggers
 
-    UPDATE Users
-    SET ownedGames = (SELECT COUNT(DISTINCT Library_Games.GameID)
-    FROM Library
-    INNER JOIN Library_Games
-    ON Library.LibraryID = Library_Games.LibraryID
-    WHERE Library.userID = Users.userID
-    );
-
-    UPDATE Users
-    SET totalPlaytime = (SELECT COALESCE(SUM(Library_Games.playtime))
-    FROM Library
-    INNER JOIN Library_Games
-    ON Library.LibraryID = Library_Games.LibraryID
-    WHERE Library.userID = Users.userID
-    );
-
-    -- Playtime, GameID and LibraryID counting in Subquery
     SET FOREIGN_KEY_CHECKS = 1;
+    SET AUTOCOMMIT =1;
     COMMIT;
 END //
-
-
-
--- SELECT * from Users;
--- SELECT * from Games;
--- SELECT * from Publishers;
 
 DELIMITER ;

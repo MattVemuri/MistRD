@@ -1,3 +1,5 @@
+-- All code hand authored except for those labeled otherwise
+
 ----------------------------
 -- Games
 

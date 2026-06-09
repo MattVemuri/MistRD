@@ -1,46 +1,47 @@
-// THIS FILE HANDLES THE PUBLISHERS & SINGLE PUBLISHER PAGES
+// THIS FILE HANDLES THE LIBRARYGAMES & LIBRARY PAGES
 // All code hand authored except for those labeled otherwise
 
-// get confirm add button
+// Get confirm add
 const confirmAdd = document.getElementById('confirm-add')
 if(confirmAdd){
-    // add click handler
+    // add click event handler
     confirmAdd.addEventListener('click',()=>{
         // stop click from going through
         event.preventDefault()
         event.stopPropagation()
-        // get add form
+        // get add form parent
         const item = confirmAdd.closest('.add-form')
-        // get inputs
+        // grab inputs
         let inputs = fetchInputs(item)
-        // verify if inputs are valid
-        if(verifyPublisherInput(inputs)){
-            // post new publisher to db
-            fetch('/publishers/add', {
+        // verify inputs are correct
+        if(verifyLGHeader(inputs.slice(0,2)) && verifyLGInput(inputs.slice(2,4))){
+            // add new library game to db
+            fetch('/libraryGames/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    name: inputs[0],
-                    webpage: inputs[1],
-                    email: inputs[2],
+                    game: inputs[0],
+                    username: inputs[1],
+                    playtime:inputs[2],
+                    completion: inputs[3]
                 })
             }).then(()=>{
-                // refresh
+                // reload page
                 window.location.reload()
             })
-        }else{
-            // refresh
+        }else{   
+            // reload page
             window.location.reload()
         }
     })
 }
 
-// get edit buttons
+// get all edit buttons
 const editBtns = document.querySelectorAll(".edit");
 if(editBtns){
-    // iterate through each button
+    // iterate through all buttons
     editBtns.forEach(editBtn =>{
         // add a click event to edit buttons
         editBtn.addEventListener('click',(event)=>{
@@ -56,27 +57,26 @@ if(editBtns){
                 item.dataset.href = item.href;
                 item.removeAttribute('href')
                 // convert to editable fields
-                editPublisher(item)
+                editLG(item)
             }else{
                 // restore link
                 item.href = item.dataset.href
-                // grab inputes
+                // grab inputs
                 let inputs = fetchInputs(item)
-                // if inputs are valid
-                if(verifyPublisherInput(inputs)){
-                    // grab id
+                // verify inputs are valid
+                if(verifyLGInput(inputs)){
+                    // get id
                     let id = item.querySelector('.item-id').textContent.trim()
-                    // post updated publisher to db
-                    fetch('/publishers/modify', {
+                    // post updated version to db
+                    fetch('/libraryGames/modify', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
                             id,
-                            name: inputs[0],
-                            webpage: inputs[1],
-                            email: inputs[2],
+                            playtime:inputs[0],
+                            completion: inputs[1]
                         })
                     }).then(()=>{
                         // refresh
@@ -92,68 +92,82 @@ if(editBtns){
 }
 
 // convert to editable fields
-function editPublisher(item){
+function editLG(item){
     // get all labels
     const fields = item.querySelectorAll('.label-content');
-    // loop through each
+    // iterate through all labels
     fields.forEach(field => {
-        // get label to identify
+        // get label which identifies what field is
         const label = field.closest('.info-box').querySelector('.label').textContent.trim()
         // get current value
-        let currentText = field.textContent.trim();
-        // create input element
+        let currentText = field.textContent.trim();    
+
+        // strip completion of %
+        if(label=='Completion'){
+            currentText = currentText.replaceAll('%','')
+        }
+    
+        // replace with input field
         const input = document.createElement("input");
-        input.type = "text"
-        // fill with current value
+        input.type = "number"
         input.value = currentText
         input.classList.add("edit-input")
-        // replace field with new input
+        // replace input on DOM
         field.replaceWith(input)
     })
-    // replace title
-    const title = item.querySelector('.item-title');
-    let currentText = title.textContent.trim();
-    const input = document.createElement("input");
-    input.type = "text"
-    input.value = currentText
-    input.classList.add("edit-input")
-    title.replaceWith(input)
 }
 
-// get inputs from item
+// get values of inputs
 function fetchInputs(item){
     // get inputs from passed item, either in edit mode or the add box
     const inputs = item.querySelectorAll('.edit-input, .add-box');
-    // init array
+    // initialize array
     var inputsArr =[]
-    // loop through each input
+    // for each input
     inputs.forEach(field => {
-        // get current value
+        // get current text value
         let currentText = field.value.trim();
-        // add to array
+        // if dropdown
+        if(currentText == 'all'){
+            // get curretn value
+            currentText = field.options[field.selectedIndex].text
+        }
+        // push to array
         inputsArr.push(currentText)
     })
-    // return inputs
+    // return list of inputs
     return inputsArr
 }
 
-// verify inputs are good
-function verifyPublisherInput(inputs){
-    // [publisher, webpage, email]
-    // check publisher
-    if(inputs[0]==''){
-        alert('Publisher name may not be left empty')
+// verifies editable inputs for library games
+function verifyLGInput(inputs){
+    // [Playtime, Completion]
+    // check playtime is non-negative
+    if(inputs[0]<0){
+        alert('Playtime may not be negative')
         return false;
     }
-    // check webpage
-    if(inputs[1]==''){
-        alert('Webpage may not be left empty')
+    // check completion is from 0-100
+    if(inputs[1]<0 || inputs[1]>100){
+        alert('Completion must be a value 0-100')
         return false;
-    }
-    // check email
-    if(inputs[2]==''){
-        alert('Email may not be left empty')
-        return false
     }
     return true
+}
+
+// verifies game name and username when adding library game
+function verifyLGHeader(inputs){
+    // [GameName, Username]
+    // game name may not be empty
+    if(inputs[0]==''){
+        alert('Game may not be empty')
+        return false;
+    }
+    // username may not be empty
+    if(inputs[1]==''){
+        alert('Username may not be empty')
+        return false;
+    }
+    
+    return true;
 }
